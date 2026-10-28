@@ -1,0 +1,14 @@
+FASTFOOD V5 - O'RNATISH
+
+1) Eski D:\\OpenServer\\domains\\f18\\Fastfood papkasini zaxira qiling yoki o'chiring.
+2) Shu ZIP ichidagi Fastfood papkasini D:\\OpenServer\\domains\\f18\\ ichiga TO'LIQ ko'chiring.
+3) Natija aynan shunday bo'lsin:
+   D:\\OpenServer\\domains\\f18\\Fastfood\\index.php
+   D:\\OpenServer\\domains\\f18\\Fastfood\\database.php
+   D:\\OpenServer\\domains\\f18\\Fastfood\\fastfood\\index.php
+   D:\\OpenServer\\domains\\f18\\Fastfood\\fastfood\\database.php
+4) Brauzer: http://f18/Fastfood/
+
+ESLATMA:
+Root index.php database.php talab qilmaydi; u faqat fastfood/index.php ga yo'naltiradi.
+Asosiy database.php: Fastfood/fastfood/database.php

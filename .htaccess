@@ -1,0 +1,14 @@
+Options -Indexes
+
+<FilesMatch "^(\.env|composer\.(json|lock)|.*\.(sql|log|ini|bak|old|dist))$">
+    Require all denied
+</FilesMatch>
+
+RewriteEngine On
+RewriteRule ^(?:config|storage|private|logs)(?:/|$) - [F,L,NC]
+
+# 3D modellar uchun yuklash limiti (faqat mod_php bo'lsa; FPM/CGI da hosting panelidan o'zgartiring)
+<IfModule mod_php.c>
+    php_value upload_max_filesize 32M
+    php_value post_max_size 36M
+</IfModule>

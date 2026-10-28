@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap');
+
+/* ==========================================================================
+   theme-elegant.css - butun loyiha uchun elegant restoran mavzusi
+   Palitra: qaymoq (cream) + espresso + sharob rangi (burgundy) + oltin (gold)
+   Ulanadi: barcha sahifalarda style.css dan KEYIN.
+   O'chirish uchun: shu faylning <link> ini olib tashlash kifoya.
+   ========================================================================== */
+
+:root {
+  --primary: #9b2c3a;
+  --primary-dark: #7a1f2c;
+  --accent: #c9a24d;
+  --gold-ink: #8a6a22;          /* qaymoq fonida o'qiladigan oltin matn */
+  --gold-soft: #ecdcae;
+  --bg: #f8f4ec;
+  --surface: #fffdf8;
+  --surface-2: #f1eadd;
+  --text: #241d18;
+  --muted: #7b6f63;
+  --line: #e6dccb;
+  --success: #3f7d58;
+  --radius: 18px;
+  --shadow: 0 10px 30px rgba(70, 45, 20, .08);
+  --shadow-lg: 0 24px 60px rgba(70, 45, 20, .15);
+  --serif: 'Playfair Display', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+}
+[data-theme=dark] {
+  --primary: #c0495a;
+  --primary-dark: #a23a4b;
+  --accent: #d8b45e;
+  --gold-ink: #dcbb6c;
+  --gold-soft: #5a4a26;
+  --bg: #120f0d;
+  --surface: #1b1713;
+  --surface-2: #26201a;
+  --text: #f4ece0;
+  --muted: #a89b8a;
+  --line: #342c24;
+  --shadow: 0 12px 35px rgba(0, 0, 0, .35);
+  --shadow-lg: 0 26px 64px rgba(0, 0, 0, .5);
+}
+
+::selection { background: rgba(201, 162, 77, .32); }
+html { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent), var(--primary)); border-radius: 10px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Tipografiya: sarlavhalarda serif ---------- */
+.logo, header .logo, .hero-fit h1, .hb-name, .food-section-head h2, .product-card h3,
+.product-modal-body h3, .container > h1, .container > h2, .page-topline h1, .waiter-topbar h1,
+.myorders-head h1, .success-box h1, .form-box h2, .page-hero h1, .sidebar-brand strong {
+  font-family: var(--serif);
+  font-feature-settings: 'lnum' 1;
+  letter-spacing: -.01em;
+}
+.hero-fit h1 { font-weight: 600; letter-spacing: -.02em; }
+.food-section-head h2 { font-weight: 600; letter-spacing: -.015em; }
+header .logo { font-weight: 700; font-size: 24px; letter-spacing: 0; }
+.product-card h3 { font-weight: 600; }
+
+/* ---------- Atmosfera foni ---------- */
+.px-on body { background: transparent; }
+.px-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.px-bg i { position: absolute; display: block; will-change: translate; }
+.px-orb { border-radius: 50%; filter: blur(70px); opacity: .55; }
+.px-orb.o1 { width: 520px; height: 520px; left: -140px; top: 6%;  background: radial-gradient(circle, rgba(201, 162, 77, .40), transparent 68%); }
+.px-orb.o2 { width: 620px; height: 620px; right: -200px; top: 34%; background: radial-gradient(circle, rgba(155, 44, 58, .26), transparent 68%); }
+.px-orb.o3 { width: 460px; height: 460px; left: 28%; top: 78%; background: radial-gradient(circle, rgba(201, 162, 77, .26), transparent 68%); }
+[data-theme=dark] .px-orb { opacity: .42; }
+.px-ring { border-radius: 50%; border: 1px solid rgba(201, 162, 77, .34); }
+.px-ring.r1 { width: 640px; height: 640px; right: -180px; top: -120px; box-shadow: inset 0 0 0 38px rgba(201, 162, 77, .035); }
+.px-ring.r2 { width: 380px; height: 380px; left: -110px; top: 58%; border-color: rgba(155, 44, 58, .28); box-shadow: inset 0 0 0 22px rgba(155, 44, 58, .03); }
+.px-dust { top: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(232, 200, 120, .95), rgba(232, 200, 120, 0) 70%); animation: pxTwinkle 4s ease-in-out infinite; }
+.px-grain {
+  inset: 0; width: 100%; height: 100%; opacity: .05; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+[data-theme=dark] .px-grain { mix-blend-mode: screen; opacity: .04; }
+
+/* ---------- Header ---------- */
+header {
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  border-bottom: 1px solid transparent;
+  background-clip: padding-box;
+  transition: padding .35s ease, box-shadow .35s ease, background .35s ease;
+  position: sticky;
+}
+header::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 77, .65), transparent);
+  opacity: .55; transition: opacity .3s;
+}
+header.is-scrolled { padding-top: 10px; padding-bottom: 10px; box-shadow: 0 12px 34px -18px rgba(60, 35, 15, .45); background: color-mix(in srgb, var(--bg) 92%, transparent); }
+header.is-scrolled::after { opacity: 1; }
+[data-theme=dark] header { background: color-mix(in srgb, var(--bg) 78%, transparent); }
+header a { letter-spacing: .02em; }
+header a:hover { color: var(--gold-ink); background: rgba(201, 162, 77, .12); }
+header .logo { color: var(--text); }
+header .logo:hover { background: transparent; }
+
+/* ---------- Tugmalar ---------- */
+.btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  box-shadow: 0 8px 20px -6px rgba(155, 44, 58, .45), inset 0 0 0 1px rgba(255, 255, 255, .10);
+  letter-spacing: .02em;
+}
+.btn:hover {
+  background: linear-gradient(135deg, #ad3445, var(--primary-dark));
+  box-shadow: 0 14px 28px -8px rgba(155, 44, 58, .55), 0 0 0 1px rgba(201, 162, 77, .55), inset 0 0 0 1px rgba(255, 255, 255, .14);
+}
+.btn-secondary { background: var(--surface) !important; color: var(--text) !important; border: 1px solid var(--line) !important; box-shadow: none !important; }
+.btn-secondary:hover { border-color: var(--accent) !important; color: var(--gold-ink) !important; }
+.categories a:hover, .categories a.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.food-categories a { border-color: var(--line); }
+.food-categories a:hover { border-color: var(--accent); color: var(--gold-ink); }
+
+/* ---------- Maydonlar ---------- */
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(201, 162, 77, .22);
+}
+
+/* ---------- Kartochka, yorliqlar, bo'lim sarlavhasi ---------- */
+.product-card, .admin-panel, .my-order, .form-box, .metric-strip > div { border-color: var(--line); }
+.food-kicker, .eyebrow, .panel-kicker {
+  color: var(--gold-ink); background: rgba(201, 162, 77, .14);
+  border: 1px solid rgba(201, 162, 77, .30);
+  letter-spacing: .22em;
+}
+.eyebrow, .panel-kicker { background: transparent; border: 0; padding: 0; }
+.food-card-badge { background: linear-gradient(135deg, var(--accent), #b88a2e); color: #2a1d08; box-shadow: 0 6px 14px rgba(201, 162, 77, .4); }
+.food-section-head { position: relative; padding-bottom: 20px; margin-bottom: 26px; }
+.food-section-head::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, var(--accent), rgba(201, 162, 77, .15) 55%, transparent);
+}
+.food-section-head::before {
+  content: ''; position: absolute; left: 0; bottom: -4px; width: 9px; height: 9px;
+  background: var(--accent); transform: rotate(45deg); z-index: 1;
+}
+.food-section-head > a { color: var(--gold-ink); }
+.price { color: var(--primary); }
+.product-card:hover { border-color: rgba(201, 162, 77, .5); }
+
+/* ---------- Hero: restoran atmosferasi ---------- */
+.hero-fit {
+  isolation: isolate;
+  min-height: 540px;
+  padding: 76px 64px;
+  margin: 6px 0 64px;
+  border-radius: 30px;
+  border: 1px solid rgba(201, 162, 77, .38);
+  color: #f6efe3;
+  background:
+    radial-gradient(60% 80% at 82% 18%, rgba(201, 162, 77, .30), transparent 62%),
+    radial-gradient(70% 90% at 0% 100%, rgba(155, 44, 58, .50), transparent 62%),
+    linear-gradient(135deg, #1e140e, #120d0a);
+  box-shadow: 0 40px 90px -30px rgba(40, 20, 8, .65), inset 0 0 0 1px rgba(255, 255, 255, .04);
+}
+.hero-fit-layers { position: absolute; inset: 0; overflow: hidden; z-index: -1; border-radius: inherit; pointer-events: none; }
+.hero-fit-layers i { position: absolute; display: block; will-change: translate; z-index: 1; }
+.px-hero-media {
+  position: absolute; left: 0; right: 0; top: -22%; bottom: -22%;
+  background-size: cover; background-position: center;
+  will-change: translate;
+}
+.hero-fit.has-photo .hero-fit-layers::after,
+.hero-fit-layers::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(14, 9, 6, .88) 0%, rgba(14, 9, 6, .55) 55%, rgba(14, 9, 6, .25) 100%),
+    radial-gradient(80% 90% at 80% 20%, rgba(201, 162, 77, .18), transparent 60%);
+}
+.hero-fit:not(.has-photo) .hero-fit-layers::after { background: radial-gradient(90% 100% at 50% 110%, rgba(0, 0, 0, .35), transparent 60%); }
+.hero-bokeh { border-radius: 50%; filter: blur(2px); background: radial-gradient(circle, rgba(255, 220, 150, .85), rgba(255, 190, 90, .22) 55%, transparent 72%); animation: pxTwinkle 5s ease-in-out infinite; }
+.hero-bokeh.b1 { width: 120px; height: 120px; left: 8%;  top: 14%; opacity: .55; }
+.hero-bokeh.b2 { width: 70px;  height: 70px;  left: 44%; top: 8%;  opacity: .7;  animation-delay: -1.5s; }
+.hero-bokeh.b3 { width: 190px; height: 190px; right: 6%; top: 52%; opacity: .38; animation-delay: -2.2s; }
+.hero-bokeh.b4 { width: 54px;  height: 54px;  left: 36%; bottom: 16%; opacity: .75; animation-delay: -3s; }
+.hero-bokeh.b5 { width: 96px;  height: 96px;  right: 34%; bottom: 8%; opacity: .5; animation-delay: -.8s; }
+.hero-fit-copy { position: relative; }
+.hero-fit h1 { color: #fff6e4; font-size: clamp(40px, 5.4vw, 72px); line-height: 1.04; text-shadow: 0 6px 30px rgba(0, 0, 0, .35); }
+.hero-fit-copy > p { color: rgba(246, 239, 227, .78); font-size: 18px; }
+.hero-fit .btn { background: linear-gradient(135deg, #d8b45e, #b88a2e); color: #2a1d08; box-shadow: 0 12px 28px -8px rgba(201, 162, 77, .6); }
+.hero-fit .btn:hover { background: linear-gradient(135deg, #e6c77a, #c69a3c); box-shadow: 0 16px 34px -8px rgba(201, 162, 77, .75); }
+.hero-fit-ghost { background: rgba(255, 255, 255, .06); color: #fff6e4; border-color: rgba(255, 255, 255, .26); backdrop-filter: blur(8px); }
+.hero-fit-ghost:hover { border-color: var(--accent); color: #f0d68c; }
+.hero-fit-meta { color: rgba(246, 239, 227, .72); }
+.hero-fit-meta li:before { background: var(--accent); box-shadow: 0 0 0 3px rgba(201, 162, 77, .2); }
+
+.hero-fit-brand {
+  background: rgba(255, 255, 255, .045);
+  border: 1px solid rgba(201, 162, 77, .30);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 60px rgba(201, 162, 77, .08), 0 30px 60px -30px rgba(0, 0, 0, .6);
+}
+.hb-ring { border-color: rgba(201, 162, 77, .38); }
+.hb-mark { filter: drop-shadow(0 16px 34px rgba(201, 162, 77, .38)); }
+.hb-name { color: #fff3d6; font-family: var(--serif); font-weight: 600; letter-spacing: .01em; }
+.hb-tag { color: rgba(232, 200, 120, .85); }
+.hero-fit-brand .hb-chip { background: rgba(28, 19, 13, .78); border-color: rgba(201, 162, 77, .4); backdrop-filter: blur(6px); box-shadow: 0 14px 28px -8px rgba(0, 0, 0, .55), 0 0 0 4px rgba(201, 162, 77, .08); }
+
+/* Menyu sahifasi: past parallax banner */
+.page-hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  max-width: 1200px; margin: 22px auto 0; width: calc(100% - 56px);
+  border-radius: 26px; border: 1px solid rgba(201, 162, 77, .38);
+  min-height: 230px; display: flex; align-items: flex-end;
+  color: #f6efe3;
+  background:
+    radial-gradient(60% 90% at 85% 10%, rgba(201, 162, 77, .30), transparent 62%),
+    radial-gradient(70% 100% at 0% 100%, rgba(155, 44, 58, .50), transparent 62%),
+    linear-gradient(135deg, #1e140e, #120d0a);
+  box-shadow: 0 30px 70px -30px rgba(40, 20, 8, .6);
+}
+.page-hero .hero-fit-layers { z-index: -1; }
+.page-hero-inner { position: relative; padding: 44px 48px; }
+.page-hero h1 { color: #fff6e4; font-size: clamp(34px, 4.6vw, 58px); font-weight: 600; margin-top: 12px; line-height: 1.05; text-shadow: 0 6px 30px rgba(0, 0, 0, .4); }
+.page-hero .food-kicker { color: #f0d68c; background: rgba(201, 162, 77, .16); border-color: rgba(201, 162, 77, .4); }
+.page-hero + .container { padding-top: 34px; }
+
+/* ---------- Kirish animatsiyasi (scroll) ---------- */
+.px-js .px-reveal:not(.px-in) { opacity: 0; translate: 0 28px; }
+.px-js .px-reveal { transition: opacity .9s cubic-bezier(.2, .8, .2, 1), translate .9s cubic-bezier(.2, .8, .2, 1); }
+.px-js .px-reveal.px-in { opacity: 1; translate: none; }
+
+/* ---------- Kirish (login) va shisha oynalar ---------- */
+.form-box, .success-box {
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(201, 162, 77, .30);
+  box-shadow: var(--shadow-lg), inset 0 0 0 1px rgba(255, 255, 255, .25);
+}
+.product-modal { border-color: rgba(201, 162, 77, .34); }
+.product-modal-overlay { background: rgba(18, 11, 6, .72); }
+.pm-tab.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+.pm3d .pm-stage.mode-3d { background: radial-gradient(ellipse at 50% 40%, #fffaf0 0%, #f6e6cf 55%, #e8d1b0 100%); }
+[data-theme=dark] .pm3d .pm-stage.mode-3d { background: radial-gradient(ellipse at 50% 40%, #3b2f24 0%, #211a14 58%, #130f0c 100%); }
+
+/* ---------- Admin: espresso yon panel ---------- */
+.sidebar {
+  --text: #f4ece0; --muted: #b6a792; --line: rgba(255, 255, 255, .09);
+  --surface: #1b1410; --surface-2: rgba(255, 255, 255, .06);
+  background: linear-gradient(180deg, #221913 0%, #14100c 100%);
+  border-right: 1px solid rgba(201, 162, 77, .22);
+  color: var(--text);
+}
+.sidebar .brand-mark { background: linear-gradient(145deg, #b5384a, #6d1a27); box-shadow: 0 9px 22px rgba(155, 44, 58, .4), inset 0 0 0 1px rgba(232, 200, 120, .55); }
+.sidebar-nav a:hover { background: rgba(201, 162, 77, .10); color: #f4ece0; }
+.sidebar-nav a.active { background: rgba(201, 162, 77, .16); color: #ecc978; }
+.sidebar-nav a.active:before { background: var(--accent); }
+.sidebar .nav-badge { background: linear-gradient(135deg, var(--accent), #b88a2e); color: #2a1d08; }
+.sidebar .logout-link:hover { color: #ff9a9a !important; }
+.admin-content { background: transparent; }
+.page-topline h1 { font-weight: 600; }
+.metric-strip > div, .admin-panel { background: var(--surface); }
+.catalog-tabs a.active b, .count-pill { color: var(--gold-ink); }
+.category-chip.active, .table-pick.active, .quick-add, .nav-badge { background-color: var(--primary); border-color: var(--primary); }
+
+/* Kuryer sahifalari */
+.box { border: 1px solid rgba(201, 162, 77, .3); }
+.top { background: linear-gradient(135deg, #221913, #14100c) !important; border: 1px solid rgba(201, 162, 77, .25); }
+
+@keyframes pxTwinkle { 0%, 100% { opacity: .25; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.08); } }
+
+@media (max-width: 900px) {
+  .hero-fit { padding: 40px 26px; min-height: 0; }
+  .page-hero { width: calc(100% - 28px); }
+  .page-hero-inner { padding: 32px 24px; }
+  .px-orb.o1, .px-orb.o3 { opacity: .35; }
+}
+@media (max-width: 560px) {
+  .hero-fit { padding: 30px 20px; border-radius: 22px; }
+  .hero-fit h1 { font-size: 38px; }
+  .px-ring.r1 { width: 380px; height: 380px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-dust, .hero-bokeh { animation: none !important; opacity: .5; }
+  .px-js .px-reveal:not(.px-in) { opacity: 1; translate: none; }
+  header { transition: none; }
+}

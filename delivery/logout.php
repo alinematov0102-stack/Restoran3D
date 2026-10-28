@@ -1,0 +1,1 @@
+<?php session_start(); if(isset($_SESSION['courier_id'])){require_once __DIR__.'/../fastfood/database.php';$pdo->prepare("UPDATE delivery_couriers SET status='offline' WHERE id=?")->execute([(int)$_SESSION['courier_id']]);} session_destroy();header('Location: login.php');exit;

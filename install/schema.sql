@@ -1,0 +1,124 @@
+CREATE TABLE IF NOT EXISTS admin (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  username VARCHAR(100) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), UNIQUE KEY uq_admin_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS categories (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  name_ru VARCHAR(255) NULL,
+  name_en VARCHAR(255) NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS products (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  name_ru VARCHAR(255) NULL,
+  name_en VARCHAR(255) NULL,
+  description TEXT NULL,
+  description_ru TEXT NULL,
+  description_en TEXT NULL,
+  price DECIMAL(12,2) NOT NULL DEFAULT 0,
+  category_id INT UNSIGNED NOT NULL,
+  image TEXT NULL,
+  model_3d VARCHAR(500) NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), KEY idx_products_category (category_id),
+  CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS restaurant_tables (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  table_number VARCHAR(50) NOT NULL,
+  seats INT NOT NULL DEFAULT 4,
+  status VARCHAR(30) NOT NULL DEFAULT 'bosh',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), UNIQUE KEY uq_table_number (table_number)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS orders (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  customer_name VARCHAR(255) NOT NULL,
+  phone VARCHAR(50) NULL,
+  address TEXT NULL,
+  table_number VARCHAR(50) NULL,
+  total DECIMAL(12,2) NOT NULL DEFAULT 0,
+  order_type VARCHAR(50) NOT NULL DEFAULT 'yetkazib berish',
+  status VARCHAR(50) NOT NULL DEFAULT 'yangi',
+  delivery_status VARCHAR(50) NULL,
+  courier_id INT UNSIGNED NULL,
+  delivery_lat DECIMAL(10,7) NULL,
+  delivery_lng DECIMAL(10,7) NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), KEY idx_orders_status_created (status,created_at), KEY idx_orders_courier (courier_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS order_items (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  order_id INT UNSIGNED NOT NULL,
+  product_id INT UNSIGNED NULL,
+  product_name VARCHAR(255) NOT NULL,
+  price DECIMAL(12,2) NOT NULL DEFAULT 0,
+  quantity INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (id), KEY idx_order_items_order (order_id),
+  CONSTRAINT fk_order_items_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS reservations (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  table_id INT UNSIGNED NOT NULL,
+  customer_name VARCHAR(255) NOT NULL,
+  phone VARCHAR(50) NULL,
+  reservation_time DATETIME NOT NULL,
+  status VARCHAR(30) NOT NULL DEFAULT 'band',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), KEY idx_reservations_table_time (table_id,reservation_time),
+  CONSTRAINT fk_reservations_table FOREIGN KEY (table_id) REFERENCES restaurant_tables(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS transactions (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  type VARCHAR(20) NOT NULL,
+  amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+  description VARCHAR(500) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), KEY idx_transactions_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS daily_closures (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  closing_date DATE NOT NULL,
+  amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), UNIQUE KEY uq_closing_date (closing_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS delivery_couriers (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  username VARCHAR(100) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  phone VARCHAR(50) NULL,
+  vehicle VARCHAR(100) NULL,
+  current_lat DECIMAL(10,7) NULL,
+  current_lng DECIMAL(10,7) NULL,
+  location_updated_at DATETIME NULL,
+  status VARCHAR(30) NOT NULL DEFAULT 'offline',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), UNIQUE KEY uq_courier_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS order_cancellations (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  order_id INT UNSIGNED NOT NULL,
+  reason VARCHAR(500) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id), KEY idx_cancel_order (order_id),
+  CONSTRAINT fk_cancel_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -1,0 +1,9 @@
+Options -Indexes
+<FilesMatch "\.(php|php[0-9]?|phtml|phar|cgi|pl|py|sh)$">
+    Require all denied
+</FilesMatch>
+
+# 3D modellar (.glb) to'g'ri MIME turi bilan berilsin
+<IfModule mod_mime.c>
+    AddType model/gltf-binary .glb
+</IfModule>
