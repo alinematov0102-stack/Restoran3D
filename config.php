@@ -22,6 +22,8 @@ function ff_env(string $key, ?string $default = null): ?string {
 }
 
 define('DB_HOST', ff_env('DB_HOST', 'localhost'));
+define('DB_PORT', ff_env('DB_PORT', '3306'));
+define('DB_SSL', ff_env('DB_SSL', '0'));
 define('DB_NAME', ff_env('DB_NAME', 'foodadmin'));
 define('DB_USER', ff_env('DB_USER', 'root'));
 define('DB_PASS', ff_env('DB_PASS', ''));
