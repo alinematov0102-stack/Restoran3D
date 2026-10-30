@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if(!isset($_SESSION['admin_id'])){http_response_code(401);exit;}
 require_once __DIR__ . '/../fastfood/database.php';
 $id=(int)($_POST['order_id']??0);$action=$_POST['action']??'';

@@ -1,25 +1,23 @@
 <?php
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if (!isset($_SESSION['admin_id'])) { header('Location: login.php'); exit; }
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
 require_once __DIR__ . '/daily_close.php';
 ff_close_past_days($pdo);
-$totalOrders=(int)$pdo->query("SELECT COUNT(*) FROM orders")->fetchColumn();
-$todayOrders=(int)$pdo->query("SELECT COUNT(*) FROM orders WHERE DATE(created_at)=CURDATE()")->fetchColumn();
-$todayRevenue=(float)($pdo->query("SELECT COALESCE(SUM(total),0) FROM orders WHERE DATE(created_at)=CURDATE() AND status!='bekor qilingan'")->fetchColumn()?:0);
-$newOrders=(int)$pdo->query("SELECT COUNT(*) FROM orders WHERE status='yangi'")->fetchColumn();
+$agg=$pdo->query("SELECT COUNT(*) c, COALESCE(SUM(DATE(created_at)=CURDATE()),0) today_c, COALESCE(SUM(CASE WHEN DATE(created_at)=CURDATE() AND status!='bekor qilingan' THEN total END),0) today_r, COALESCE(SUM(status='yangi'),0) new_c, COALESCE(SUM(CASE WHEN status!='bekor qilingan' THEN total END),0) total_r FROM orders")->fetch();
+$totalOrders=(int)$agg['c'];$todayOrders=(int)$agg['today_c'];$todayRevenue=(float)$agg['today_r'];$newOrders=(int)$agg['new_c'];$totalRevenue=(float)$agg['total_r'];
 $totalProducts=(int)$pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();
-$totalRevenue=(float)($pdo->query("SELECT COALESCE(SUM(total),0) FROM orders WHERE status!='bekor qilingan'")->fetchColumn()?:0);
-$totalIn=(float)($pdo->query("SELECT COALESCE(SUM(amount),0) FROM transactions WHERE type='kirim'")->fetchColumn()?:0);
-$totalOut=(float)($pdo->query("SELECT COALESCE(SUM(amount),0) FROM transactions WHERE type='chiqim'")->fetchColumn()?:0);
+$tr=$pdo->query("SELECT COALESCE(SUM(CASE WHEN type='kirim' THEN amount END),0) i, COALESCE(SUM(CASE WHEN type='chiqim' THEN amount END),0) o FROM transactions")->fetch();
+$totalIn=(float)$tr['i'];$totalOut=(float)$tr['o'];
 $balance=$totalIn-$totalOut;
+$byDay=[];foreach($pdo->query("SELECT DATE(created_at) d, COALESCE(SUM(total),0) v FROM orders WHERE created_at>=DATE_SUB(CURDATE(),INTERVAL 6 DAY) AND status!='bekor qilingan' GROUP BY DATE(created_at)")->fetchAll() as $r){$byDay[$r['d']]=(float)$r['v'];}
 $days=[];
-for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i days"));$st=$pdo->prepare("SELECT COALESCE(SUM(total),0) FROM orders WHERE DATE(created_at)=? AND status!='bekor qilingan'");$st->execute([$d]);$days[]=['label'=>date('d M',strtotime($d)),'value'=>(float)$st->fetchColumn()];}
+for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i days"));$days[]=['label'=>date('d M',strtotime($d)),'value'=>$byDay[$d]??0.0];}
 $max=max(1,max(array_column($days,'value')));
 $lang=ff_current_lang();
 ?>
-<!doctype html><html lang="<?=$lang?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Dashboard</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script><script src="../js/parallax.js?v=1" defer></script>
+<!doctype html><html lang="<?=$lang?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Dashboard</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script><script src="../js/parallax.js?v=1" defer></script>
 </head><body>
 <?php include __DIR__.'/sidebar.php'; ?>
 <main class="admin-content">

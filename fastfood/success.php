@@ -14,7 +14,7 @@ if (!$order) { header('Location: index.php'); exit; }
 <head>
 <meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Buyurtma qabul qilindi — FastFood</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1"><script src="../js/theme.js"></script>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script>
 <style>
 .success-wrap{min-height:calc(100vh - 80px);display:grid;place-items:center;padding:40px 18px}.success-box{width:min(620px,100%);background:var(--surface);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow-lg);padding:42px;text-align:center}.success-icon{width:76px;height:76px;margin:0 auto 20px;border-radius:24px;display:grid;place-items:center;background:rgba(22,163,74,.12);color:var(--success);font-size:38px;font-weight:900}.success-box h1{font-size:34px;margin-bottom:10px}.success-box p{color:var(--muted);max-width:470px;margin:0 auto 24px}.order-number{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);font-weight:800;margin-bottom:26px}.success-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.success-actions .btn{min-width:180px}.success-note{margin-top:22px;color:var(--muted);font-size:13px}
 @media(max-width:560px){.success-box{padding:30px 20px}.success-box h1{font-size:27px}.success-actions{flex-direction:column}.success-actions .btn{width:100%}}

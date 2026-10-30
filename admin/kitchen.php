@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if (!isset($_SESSION['admin_id'])) { header('Location: login.php'); exit; }
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
@@ -11,7 +11,7 @@ $orders = $pdo->query("SELECT * FROM orders WHERE status IN ('qabul qilingan','t
 <head>
 <meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FastFood — Oshxona</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1"><script src="../js/theme.js"></script>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script>
 <style>
 .kitchen-head{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}.kitchen-head h1{margin:0;color:var(--text)}
 .kitchen-controls{display:flex;gap:8px;align-items:center}.kitchen-controls .auto{display:flex;align-items:center;gap:7px;padding:10px 12px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;font-size:12px;font-weight:800}

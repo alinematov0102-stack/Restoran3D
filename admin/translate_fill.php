@@ -5,7 +5,7 @@
 //
 // Ishlatib bo'lgach, XAVFSIZLIK UCHUN bu faylni serverdan O'CHIRIB TASHLANG.
 
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

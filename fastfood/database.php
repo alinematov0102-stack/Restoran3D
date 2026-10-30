@@ -5,6 +5,8 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::ATTR_PERSISTENT => true,   // har so'rovda SSL ulanishni qayta o'rnatmaslik uchun
+        PDO::ATTR_TIMEOUT => 10,
     ];
     if (DB_SSL === '1') {
         // TiDB Cloud / Aiven kabi bulutli bazalar SSL talab qiladi

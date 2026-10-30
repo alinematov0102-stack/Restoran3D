@@ -1,6 +1,6 @@
 <?php
 // hero.php - Bosh sahifadagi katta fon rasmini (restoran muhiti) yuklash.
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if (!isset($_SESSION['admin_id'])) { header('Location: login.php'); exit; }
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
@@ -62,7 +62,7 @@ $cur = hero_current($dir);
 $lang = ff_current_lang();
 ?>
 <!doctype html><html lang="<?= $lang ?>"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Bosh sahifa rasmi</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1"><script src="../js/theme.js"></script>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script>
 <style>.hero-admin-prev{height:260px;border-radius:16px;border:1px solid var(--line);background:var(--surface-2) center/cover no-repeat;display:grid;place-items:center;color:var(--muted);font-weight:700;margin:16px 0}.hero-admin-box{max-width:760px}.hero-admin-box ul{margin:8px 0 0 18px;color:var(--muted);font-size:13px;line-height:1.7}</style><script src="../js/parallax.js?v=1" defer></script>
 </head>
 <body><?php include __DIR__ . '/sidebar.php'; ?>

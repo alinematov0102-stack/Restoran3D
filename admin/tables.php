@@ -1,6 +1,6 @@
 <?php
 // tables.php - Admin: restoran stollarini boshqarish
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit;
@@ -79,9 +79,9 @@ foreach ($reservations as $r) {
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars(ff_current_lang()) ?>">
 <head>
-<meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Stollar - Admin</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1">
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
 <script src="../js/theme.js"></script>
 <script src="../js/admin-i18n.js" defer></script>
 <script src="../js/parallax.js?v=1" defer></script>

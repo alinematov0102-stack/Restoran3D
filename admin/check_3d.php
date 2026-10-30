@@ -1,6 +1,6 @@
 <?php
 // check_3d.php - 3D tizim tekshiruvi. Admin sifatida kirib oching: /admin/check_3d.php
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if (!isset($_SESSION['admin_id'])) { header('Location: login.php'); exit; }
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/model3d_helper.php';

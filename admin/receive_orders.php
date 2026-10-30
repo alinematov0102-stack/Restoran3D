@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if (!isset($_SESSION['admin_id'])) { header('Location: login.php'); exit; }
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
@@ -50,7 +50,7 @@ function statusLabel($s){ $m=['yangi'=>'Yangi','qabul qilingan'=>'Qabul qilingan
 ?>
 <!doctype html><html lang="<?=htmlspecialchars(ff_current_lang())?>"><head>
 <meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Buyurtma olish — FastFood Admin</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script>
 <style>
 .receive-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}.receive-grid{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:16px}.receive-card{background:var(--surface,#fff);border:1px solid var(--line,#e8e1d8);border-radius:18px;padding:18px;box-shadow:0 10px 28px rgba(0,0,0,.06)}.receive-card.new{border:2px solid #9b2c3a}.receive-id{font:800 20px/1 monospace}.receive-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}.receive-meta div{padding:9px;border-radius:10px;background:var(--surface-2,#f7f4ef)}.receive-meta small{display:block;color:var(--muted,#777);font-size:10px}.receive-actions{display:flex;gap:8px;flex-wrap:wrap}.receive-actions form{flex:1;min-width:150px}.receive-actions button{width:100%}.receive-empty{padding:70px 20px;text-align:center;border:1px dashed var(--line);border-radius:18px}.new-badge,.status-badge{display:inline-flex;padding:6px 9px;border-radius:999px;font-weight:800;font-size:11px}.new-badge{background:#fee2e2;color:#b91c1c}.status-badge{background:var(--surface-2,#f3f4f6);color:var(--text,#222)}.toolbar-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px}.mini-stat{background:var(--surface,#fff);border:1px solid var(--line);border-radius:14px;padding:12px}.mini-stat span{display:block;color:var(--muted);font-size:12px}.mini-stat b{font-size:22px}.view-box{margin:0 0 20px;padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:18px}.view-items{width:100%;border-collapse:collapse}.view-items th,.view-items td{padding:9px;border-bottom:1px solid var(--line);text-align:left}.status-select{width:100%;margin-top:6px}@media(max-width:1050px){.receive-grid{grid-template-columns:repeat(2,minmax(280px,1fr))}.toolbar-stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.receive-head{flex-direction:column}.receive-grid{grid-template-columns:1fr}.toolbar-stats{grid-template-columns:repeat(2,1fr)}}
 </style><script src="../js/parallax.js?v=1" defer></script>

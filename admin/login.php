@@ -3,9 +3,11 @@
 session_start();
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
+require_once __DIR__ . '/auth.php';
+ff_ensure_staff_schema($pdo);
 
 if (isset($_SESSION['admin_id'])) {
-    header('Location: dashboard.php');
+    header('Location: ' . ff_home());
     exit;
 }
 
@@ -20,10 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $admin = $stmt->fetch();
 
     if ($admin && password_verify($password, $admin['password'])) {
-        $_SESSION['admin_id'] = $admin['id'];
-        $_SESSION['admin_username'] = $admin['username'];
-        header('Location: dashboard.php');
-        exit;
+        if (isset($admin['is_active']) && (int)$admin['is_active'] !== 1) {
+            $error = 'Bu hisob o\'chirilgan. Administrator bilan bog\'laning.';
+        } else {
+            session_regenerate_id(true);
+            $_SESSION['admin_id'] = $admin['id'];
+            $_SESSION['admin_username'] = $admin['username'];
+            $_SESSION['admin_role'] = isset(FF_ROLES[$admin['role'] ?? 'admin']) ? ($admin['role'] ?? 'admin') : 'waiter';
+            $_SESSION['admin_name'] = $admin['full_name'] ?? $admin['username'];
+            $_SESSION['role_checked'] = time();
+            header('Location: ' . ff_home());
+            exit;
+        }
     } else {
         $error = 'Login yoki parol noto\'g\'ri.';
     }
@@ -32,9 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="<?= ff_current_lang() ?>">
 <head>
-<meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title><?= t('admin_login_title') ?></title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1">
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
 <script src="../js/theme.js"></script>
 <script src="../js/admin-i18n.js" defer></script>
 <script src="../js/parallax.js?v=1" defer></script>

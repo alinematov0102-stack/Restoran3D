@@ -32,7 +32,7 @@ $products = $stmt->fetchAll();
 <head>
 <meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Mahsulotlar - FastFood</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1">
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
 <link rel="stylesheet" href="../css/ff-3d.css?v=1">
 <script>document.documentElement.classList.add("ff-js")</script>
 <script src="../js/theme.js"></script>

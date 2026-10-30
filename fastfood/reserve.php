@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Stol band qilish - FastFood</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1">
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
 <script src="../js/theme.js"></script>
 <script src="../js/parallax.js?v=1" defer></script>
 </head>

@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if (!isset($_SESSION['admin_id'])) { header('Location: login.php'); exit; }
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
@@ -45,7 +45,7 @@ if (isset($_GET['export']) && $_GET['export']==='csv') {
 $lang=ff_current_lang();
 function money($n){return number_format((float)$n,0,'',' ').' so‘m';}
 ?>
-<!doctype html><html lang="<?=htmlspecialchars($lang)?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Hisobot</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script><script src="../js/parallax.js?v=1" defer></script>
+<!doctype html><html lang="<?=htmlspecialchars($lang)?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Hisobot</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script><script src="../js/parallax.js?v=1" defer></script>
 </head><body>
 <?php include __DIR__.'/sidebar.php'; ?>
 <main class="admin-content">

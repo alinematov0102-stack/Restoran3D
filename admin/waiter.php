@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-session_start();
+session_start();require_once __DIR__.'/auth.php';ff_guard();
 if (!isset($_SESSION['admin_id'])) { header('Location: login.php'); exit; }
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
@@ -62,7 +62,7 @@ $products=$pdo->query("SELECT p.*,COALESCE(NULLIF(p.$nameCol,''),p.name) display
 $cartIds=array_values(array_filter(array_map('intval',array_keys($_SESSION['waiter_cart']))));$cartRows=[];$cartTotal=0;
 if($cartIds){$ph=implode(',',array_fill(0,count($cartIds),'?'));$s=$pdo->prepare("SELECT p.*,COALESCE(NULLIF(p.$nameCol,''),p.name) display_name FROM products p WHERE p.id IN ($ph)");$s->execute($cartIds);foreach($s->fetchAll() as $r){$q=(int)$_SESSION['waiter_cart'][(int)$r['id']];$r['quantity']=$q;$r['line_total']=$q*(float)$r['price'];$cartTotal+=$r['line_total'];$cartRows[(int)$r['id']]=$r;}}
 ?>
-<!doctype html><html lang="<?=htmlspecialchars($lang)?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Waiter POS</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=1"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script><script src="../js/parallax.js?v=1" defer></script>
+<!doctype html><html lang="<?=htmlspecialchars($lang)?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Waiter POS</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script><script src="../js/parallax.js?v=1" defer></script>
 </head><body>
 <?php include __DIR__.'/sidebar.php'; ?>
 <main class="admin-content waiter-v4">
