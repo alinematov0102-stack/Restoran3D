@@ -34,13 +34,13 @@ $menu = [
   ]],
 ];
 ?>
-<header class="admin-topbar">
+<div class="admin-topbar" role="banner">
   <button type="button" class="nav-toggle" id="navToggle" aria-label="Menyu" aria-controls="adminSidebar" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
   <div class="topbar-brand"><img src="<?= $base ?>../img/logo-mark.svg" alt="" width="30" height="30"><strong>FastFood</strong></div>
   <span class="topbar-role"><?= htmlspecialchars($roleLabel) ?></span>
-</header>
+</div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <aside class="sidebar" id="adminSidebar">

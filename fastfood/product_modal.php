@@ -42,7 +42,11 @@ require_once __DIR__ . '/model3d_helper.php';
 </div>
 
 <!-- Google <model-viewer>: 3D modelni ko'rsatish uchun (faqat shu oyna ochilganda model yuklanadi) -->
-<script type="module" src="../js/model-viewer.min.js"></script>
+<script>
+// model-viewer katta fayl: sahifa to'liq yuklangach, bo'sh vaqtda yuklanadi (sayt tezroq ochiladi)
+(function(){function L(){var s=document.createElement('script');s.type='module';s.src='../js/model-viewer.min.js';document.head.appendChild(s)}
+window.addEventListener('load',function(){('requestIdleCallback' in window)?requestIdleCallback(L,{timeout:3000}):setTimeout(L,1200)});})();
+</script>
 <script>
 (function () {
     var overlay = document.getElementById('productModalOverlay');

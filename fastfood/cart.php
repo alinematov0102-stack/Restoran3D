@@ -75,7 +75,7 @@ foreach ($_SESSION['cart'] as $item) {
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars(ff_current_lang()) ?>">
 <head>
-<meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Savat - FastFood</title>
 <link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
 <script src="../js/theme.js"></script>
@@ -108,7 +108,7 @@ foreach ($_SESSION['cart'] as $item) {
     <div class="cart-items-card">
       <?php foreach ($_SESSION['cart'] as $item): ?>
       <div class="cart-row">
-        <div class="cart-product-art"><?php if (!empty($item['image'])): ?><img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>"><?php else: ?>🍔<?php endif; ?></div>
+        <div class="cart-product-art"><?php if (!empty($item['image'])): ?><img loading="lazy" decoding="async" src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>"><?php else: ?>🍔<?php endif; ?></div>
         <div class="cart-info"><h3><?= htmlspecialchars($item['name']) ?></h3><span class="price"><?= number_format($item['price'], 0, '', ' ') ?> so'm / <?= htmlspecialchars(t('per_unit')) ?></span></div>
         <div class="qty-control"><a href="cart.php?action=dec&id=<?= $item['id'] ?>" aria-label="minus">−</a><span><?= $item['quantity'] ?></span><a href="cart.php?action=inc&id=<?= $item['id'] ?>" aria-label="plus">+</a></div>
         <div class="cart-line-total"><?= number_format($item['price'] * $item['quantity'], 0, '', ' ') ?> so'm</div>

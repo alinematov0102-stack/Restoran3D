@@ -278,3 +278,172 @@ header a.logo{color:inherit;text-decoration:none}
 header .logo img{width:36px;height:36px;display:block;flex:none}
 .brand-mark{background:none!important;box-shadow:none!important;overflow:visible}
 .brand-mark img{width:42px;height:42px;display:block;filter:drop-shadow(0 6px 12px rgba(155,44,58,.28))}
+
+
+/* ===== Telefon: kichik shriftlar kattalashtirildi (avtomatik) ===== */
+@media (max-width:820px){
+.lang-switch button{font-size:14px}
+.product-card p{font-size:16px}
+table th{font-size:15px}
+.btn-sm{font-size:13px}
+.form-box label{font-size:15px}
+.header a{font-size:16px}
+.sidebar .nav-section{font-size:13px}
+.img-preview-placeholder{font-size:16px}
+.img-uploader-hint{font-size:15px}
+.eyebrow{font-size:13px}
+.admin-muted{font-size:15px}
+.catalog-product-form label{font-size:14px}
+.nav-badge{font-size:13px}
+.sidebar h3 small{font-size:13px}
+.sidebar .theme-toggle{font-size:15px}
+.order-stat span{font-size:15px}
+.table-status{font-size:15px}
+.category-chip em{font-size:14px}
+.field-label{font-size:13px}
+.product-id{font-size:13px}
+.catalog-card-meta{font-size:14px}
+.catalog-card-body p{font-size:15px}
+.category-admin-item small{font-size:14px}
+.sidebar-brand small{font-size:13px}
+.sidebar-section-label{font-size:13px}
+.sidebar-nav a{font-size:16px}
+.nav-hint{font-size:13px}
+.logout-link{font-size:16px}
+.eyebrow,.panel-kicker{font-size:13px}
+.metric-strip span{font-size:14px}
+.metric-strip small{font-size:13px}
+.catalog-tabs a{font-size:16px}
+.catalog-tabs a b{font-size:13px}
+.stack-form label>span{font-size:13px}
+.stack-form input,.stack-form textarea,.stack-form select{font-size:16px}
+.form-section-title{font-size:13px}
+.category-main-v4 strong{font-size:16px}
+.category-main-v4 small{font-size:13px}
+.category-count-v4{font-size:13px}
+.filter-pill{font-size:14px}
+.product-cat-tag{font-size:13px}
+.product-topline-v4{font-size:13px}
+.product-topline-v4 small{font-size:13px}
+.admin-product-body-v4 p{font-size:14px}
+.live-dot{font-size:14px}
+.order-success-banner strong{font-size:16px}
+.order-success-banner small{font-size:13px}
+.step-title strong{font-size:15px}
+.step-title small{font-size:13px}
+.table-pick strong{font-size:13px}
+.table-pick small{font-size:13px}
+.waiter-section-head p,.cart-head p{font-size:13px}
+.waiter-cat{font-size:14px}
+.waiter-product-cat{font-size:13px}
+.waiter-product-info p{font-size:13px}
+.waiter-product-bottom small{font-size:13px}
+.cart-clear{font-size:13px}
+.cart-item-main strong{font-size:14px}
+.cart-item-main>span{font-size:13px}
+.qty-v4 a{font-size:16px}
+.qty-v4 b{font-size:13px}
+.cart-empty-v4 strong{font-size:16px}
+.cart-empty-v4 span{font-size:13px}
+.checkout-card-v4 label{font-size:13px}
+.selected-table-display{font-size:15px}
+.checkout-card-v4 input{font-size:15px}
+.total-v4 span{font-size:14px}
+.total-v4 small{font-size:13px}
+.checkout-disabled{font-size:13px}
+.bar-col .bar-value{font-size:13px}
+.bar-col small{font-size:13px}
+.quick-panel>a>b{font-size:14px}
+.quick-panel>a>small{font-size:13px}
+.mini-finance span{font-size:13px}
+.date-filter input,.date-filter select{font-size:14px}
+.date-filter .btn{font-size:14px}
+.dual-col small{font-size:13px}
+.chart-legend span{font-size:13px}
+.status-pill{font-size:13px}
+.detail-grid span{font-size:13px}
+.detail-grid b{font-size:14px}
+.category-side-head div span{font-size:13px}
+.side-cat span{font-size:13px}
+.side-cat b{font-size:14px}
+.side-cat em{font-size:13px}
+.category-side-tip b{font-size:13px}
+.category-side-tip span{font-size:13px}
+.modal-category-list>div{font-size:14px}
+.ff-live-toast strong{font-size:14px}
+.ff-live-toast span{font-size:13px}
+.hero-badges span{font-size:13px}
+.food-kicker{font-size:13px}
+.food-ghost{font-size:16px}
+.food-trust{font-size:14px}
+.food-price-tag small{font-size:13px}
+.food-price-tag span{font-size:13px}
+.food-benefits strong{font-size:14px}
+.food-benefits small{font-size:13px}
+.food-section-head>a{font-size:15px}
+.food-card-badge{font-size:13px}
+.food-card p{font-size:14px}
+.food-card .btn{font-size:14px}
+.cart-sub{font-size:16px}
+.cart-info .price{font-size:15px}
+.qty-control span{font-size:16px}
+.cart-remove{font-size:14px}
+.cart-total-box small{font-size:13px}
+.empty-cart-card p{font-size:16px}
+.back-link{font-size:15px}
+.checkout-step span{font-size:13px}
+.checkout-title-row p{font-size:15px}
+.checkout-total-badge small{font-size:13px}
+.checkout-section-title>span{font-size:13px}
+.checkout-section-title strong{font-size:15px}
+.checkout-section-title small{font-size:13px}
+.checkout-input{font-size:16px}
+.checkout-form-card label{font-size:13px}
+.order-type-card b{font-size:14px}
+.order-type-card small{font-size:13px}
+.order-type-card em{font-size:13px}
+.field-note{font-size:13px}
+.dinein-note strong{font-size:13px}
+.dinein-note small{font-size:13px}
+.checkout-submit{font-size:15px}
+.summary-top>span:last-child{font-size:13px}
+.summary-item-main strong{font-size:13px}
+.summary-item-main small{font-size:13px}
+.summary-item>b{font-size:13px}
+.summary-total span{font-size:13px}
+.summary-total small{font-size:13px}
+.summary-trust div{font-size:16px}
+.summary-trust span{font-size:13px}
+.optional{font-size:13px}
+.cart-line-total{font-size:15px}
+.kitchen-ticket.new:before{font-size:13px}
+.waiter-v4 .live-dot{font-size:14px}
+.waiter-v4 .table-pick strong{font-size:13px}
+.waiter-v4 .table-pick small{font-size:13px}
+.waiter-v4 .table-pick.active:after{font-size:13px}
+.waiter-v4 .waiter-cat{font-size:13px}
+.waiter-v4 .waiter-product-cat{font-size:13px}
+.waiter-v4 .waiter-product-info h3{font-size:15px}
+.waiter-v4 .waiter-product-info p{font-size:13px}
+.waiter-v4 .cart-clear{font-size:13px}
+.waiter-v4 .cart-item-main strong{font-size:14px}
+.waiter-v4 .cart-item-main small{font-size:13px}
+.waiter-v4 .qty-v4 b{font-size:13px}
+.waiter-v4 .cart-line-total{font-size:14px}
+.waiter-v4 .checkout-card-v4 label{font-size:13px}
+.waiter-v4 .waiter-selected-table{font-size:13px}
+.waiter-v4 .waiter-selected-table b{font-size:15px}
+.waiter-v4 .cart-total-v4 span{font-size:13px}
+.waiter-v4 .order-submit{font-size:15px}
+.pm-hint{font-size:14px}
+.pm-progress{font-size:14px}
+.model3d-head b{font-size:16px}
+.model3d-head small{font-size:13px}
+.model3d-drop{font-size:15px}
+.model3d-remove{font-size:15px}
+.model3d-help{font-size:15px}
+.pm-ar-btn{font-size:13px}
+.hero-fit-kicker{font-size:14px}
+.hero-fit-meta{font-size:16px}
+.hb-tag{font-size:14px}
+}

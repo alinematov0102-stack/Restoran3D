@@ -30,7 +30,7 @@ $products = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars($_COOKIE['ff_lang'] ?? 'uz') ?>">
 <head>
-<meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Mahsulotlar - FastFood</title>
 <link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
 <link rel="stylesheet" href="../css/ff-3d.css?v=1">
@@ -81,7 +81,7 @@ $products = $stmt->fetchAll();
             <span class="food-card-badge">NEW</span>
             <?php if (!empty($p['model_3d'])): ?><button type="button" class="model-chip" onclick="openProductModal(this.parentNode.querySelector('img'))">🧊 3D</button><?php endif; ?>
             <div class="ff-media">
-                <img src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['display_name']) ?>"
+                <img loading="lazy" decoding="async" src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['display_name']) ?>"
                      onerror="this.onerror=null; this.src='../css/food-placeholder.svg'"
                      onclick="openProductModal(this)"
                      data-id="<?= $p['id'] ?>"

@@ -80,7 +80,7 @@ foreach ($_SESSION['cart'] as $item) {
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars(ff_current_lang()) ?>">
 <head>
-<meta charset="UTF-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Buyurtma berish - FastFood</title>
 <link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
 <script src="../js/theme.js"></script>
