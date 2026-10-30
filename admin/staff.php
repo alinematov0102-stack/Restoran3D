@@ -67,7 +67,7 @@ $lang = ff_current_lang();
 <!doctype html><html lang="<?= htmlspecialchars($lang) ?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Xodimlar</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script></head><body>
 <?php include __DIR__ . '/sidebar.php'; ?>
 <main class="admin-content">
-  <div class="page-topline"><div><div class="eyebrow">XODIMLAR</div><h1>Xodimlar va rollar</h1><p class="admin-muted">Afitsant, oshxona, kassir va boshqa xodimlar faqat o‘z ish joyini ko‘radi.</p></div></div>
+  <div class="page-topline"><div><div class="eyebrow">XODIMLAR</div><h1>Xodimlar va rollar</h1><p class="admin-muted">Admin, menejer, afitsant, oshxona va kassir alohida ruxsatlar bilan ishlaydi. Har bir xodim faqat o‘z vazifasiga tegishli sahifalarni ko‘radi.</p></div></div>
   <?php if ($msg): ?><div class="alert alert-success"><?= htmlspecialchars($msg) ?></div><?php endif; ?>
   <?php if ($err): ?><div class="alert alert-error"><?= htmlspecialchars($err) ?></div><?php endif; ?>
 
@@ -136,7 +136,7 @@ $lang = ff_current_lang();
       <li><b>Afitsant</b> — faqat tezkor POS va chek.</li>
       <li><b>Oshxona</b> — faqat oshxona cheklari.</li>
       <li><b>Kassir</b> — buyurtma qabul qilish, chek, kirim/chiqim.</li>
-      <li><b>Yetkazib berish</b> — buyurtma qabul qilish va kuryerlarga biriktirish.</li>
+      <li><b>Operator</b> — faqat buyurtmalarni qabul qilish va holatini yangilash.</li>
     </ul>
   </div>
 </main><script src="../js/lang-switch.js"></script></body></html>

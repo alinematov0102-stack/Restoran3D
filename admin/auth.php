@@ -9,7 +9,7 @@ const FF_ROLES = [
     'waiter'   => ['label' => 'Afitsant',     'home' => 'waiter.php'],
     'kitchen'  => ['label' => 'Oshxona',      'home' => 'kitchen.php'],
     'cashier'  => ['label' => 'Kassir',       'home' => 'receive_orders.php'],
-    'dispatch' => ['label' => 'Yetkazib berish', 'home' => 'delivery/index.php'],
+    'dispatch' => ['label' => 'Operator',     'home' => 'receive_orders.php'],
 ];
 
 // Sahifa => ruxsat berilgan rollar. Ro'yxatda yo'q sahifa faqat admin uchun.
@@ -33,7 +33,6 @@ function ff_page_roles(): array {
         'kitchen_ticket.php'  => ['admin','manager','kitchen'],
         'kitchen_feed.php'    => ['admin','manager','kitchen'],
         'kitchen_action.php'  => ['admin','manager','kitchen'],
-        'delivery/index.php'  => ['admin','manager','dispatch'],
         'notifications.php'   => $all,
         // faqat admin: staff.php, backup.php, translate_fill.php
     ];
@@ -46,7 +45,8 @@ function ff_script_key(): string {
 }
 
 function ff_role(): string {
-    $r = $_SESSION['admin_role'] ?? 'admin'; // eski sessiyalar = admin
+    // Rol aniqlanmagan eski sessiyaga admin huquqi berilmaydi. Qayta login talab qilinadi.
+    $r = $_SESSION['admin_role'] ?? 'waiter';
     return isset(FF_ROLES[$r]) ? $r : 'waiter';
 }
 
@@ -105,12 +105,22 @@ function ff_guard(): void {
 
 // admin jadvaliga role/full_name/is_active ustunlarini bir marta qo'shadi
 function ff_ensure_staff_schema(PDO $pdo): void {
-    try {
-        if ($pdo->query("SHOW COLUMNS FROM admin LIKE 'role'")->fetch()) return;
-        $pdo->exec("ALTER TABLE admin ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'admin'");
-        $pdo->exec("ALTER TABLE admin ADD COLUMN full_name VARCHAR(120) NULL");
-        $pdo->exec("ALTER TABLE admin ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1");
-    } catch (Throwable $e) { error_log('staff schema: ' . $e->getMessage()); }
+    // Har bir ustunni alohida tekshiramiz: role mavjud bo'lib, full_name yo'q
+    // bo'lgan eski bazalarda ham qolgan ustunlar yaratilishi kerak.
+    $columns = [
+        'role'      => "ALTER TABLE admin ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'admin'",
+        'full_name' => "ALTER TABLE admin ADD COLUMN full_name VARCHAR(120) NULL",
+        'is_active' => "ALTER TABLE admin ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1",
+    ];
+    foreach ($columns as $column => $sql) {
+        try {
+            $check = $pdo->prepare('SHOW COLUMNS FROM admin LIKE ?');
+            $check->execute([$column]);
+            if (!$check->fetch()) $pdo->exec($sql);
+        } catch (Throwable $e) {
+            error_log('staff schema (' . $column . '): ' . $e->getMessage());
+        }
+    }
 }
 
 function ff_csrf(): string {

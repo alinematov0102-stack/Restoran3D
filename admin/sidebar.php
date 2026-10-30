@@ -18,7 +18,6 @@ $menu = [
     ['receive_orders.php', '🛎️', 'Buyurtma olish',   '',            []],
     ['kitchen.php',        '🍳', 'Oshxona',          'Cheklar',     []],
     ['waiter.php',         '✦',  'Afitsant',         'Tezkor POS',  []],
-    ['delivery/index.php', '🛵', 'Yetkazib berish',  '',            []],
   ]],
   ['Boshqaruv', [
     ['catalog.php',        '▦',  'Katalog',          'Mahsulotlar', ['products.php','categories.php']],
