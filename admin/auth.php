@@ -44,8 +44,9 @@ function ff_script_key(): string {
 }
 
 function ff_role(): string {
-    $r = $_SESSION['admin_role'] ?? 'admin'; // eski sessiyalar = admin
-    if ($r === 'dispatch') $r = 'cashier';    // olib tashlangan rol
+    // Sessiyada rol bo'lmasa, hech qachon admin huquqini bermaymiz.
+    $r = $_SESSION['admin_role'] ?? '';
+    if ($r === 'dispatch') $r = 'cashier'; // olib tashlangan rol
     return isset(FF_ROLES[$r]) ? $r : 'waiter';
 }
 
@@ -95,21 +96,33 @@ function ff_base_prefix(string $key): string { return strpos($key, '/') !== fals
 // Har 5 daqiqada xodim hali faolmi va roli o'zgarmaganmi tekshiradi
 function ff_revalidate(): void {
     if (empty($_SESSION['admin_id'])) return;
-    $now = time();
-    if (($_SESSION['role_checked'] ?? 0) > $now - 300) return;
     try {
         global $pdo;
-        if (empty($_SESSION['schema_ok'])) { ff_ensure_staff_schema($pdo); $_SESSION['schema_ok'] = 1; }
+        if (empty($_SESSION['schema_ok'])) {
+            ff_ensure_staff_schema($pdo);
+            $_SESSION['schema_ok'] = 1;
+        }
+        // Har bir admin so'rovida bazadan qayta tekshiramiz:
+        // o'chirilgan xodim yoki o'zgargan rol darhol kuchga kiradi.
         $st = $pdo->prepare('SELECT role,is_active,extra_pages FROM admin WHERE id=?');
         $st->execute([(int)$_SESSION['admin_id']]);
         $u = $st->fetch();
         if (!$u || (isset($u['is_active']) && (int)$u['is_active'] !== 1)) {
-            $_SESSION = []; session_destroy(); return;
+            $_SESSION = [];
+            session_destroy();
+            return;
         }
-        if (isset($u['role'])) $_SESSION['admin_role'] = $u['role'];
+        $role = (string)($u['role'] ?? '');
+        $_SESSION['admin_role'] = isset(FF_ROLES[$role]) ? $role : 'waiter';
         $_SESSION['admin_extra'] = (string)($u['extra_pages'] ?? '');
-        $_SESSION['role_checked'] = $now;
-    } catch (Throwable $e) { /* ustun hali yo'q bo'lsa e'tibor bermaymiz */ }
+    } catch (Throwable $e) {
+        // Bazani tekshirib bo'lmasa, eski sessiyaga ishonmaymiz.
+        error_log('admin session revalidation failed: ' . $e->getMessage());
+        $_SESSION = [];
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
+    }
 }
 
 function ff_guard(): void {
