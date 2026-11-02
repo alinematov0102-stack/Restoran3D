@@ -30,6 +30,10 @@ if ($action === 'add' && isset($_GET['id'])) {
             ];
         }
     }
+    if (isset($_GET['ajax'])) {
+        $cnt = 0; foreach ($_SESSION['cart'] as $it) $cnt += (int)($it['quantity'] ?? 1);
+        header('Content-Type: application/json'); echo json_encode(['ok' => (bool)$product, 'count' => $cnt]); exit;
+    }
     header('Location: cart.php');
     exit;
 }
@@ -77,12 +81,13 @@ foreach ($_SESSION['cart'] as $item) {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Savat - FastFood</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><link rel="stylesheet" href="../css/mobile-app.css?v=1">
 <script src="../js/theme.js"></script>
 <script src="../js/parallax.js?v=1" defer></script>
 </head>
 <body>
 <header>
+    <button type="button" class="m-burger" aria-label="Menu" onclick="ffDrawer(true)"><span></span><span></span><span></span></button>
     <a class="logo" href="index.php"><img src="../img/logo-mark.svg" alt="" width="36" height="36"><span>FastFood</span></a>
     <div>
         <a href="index.php"><?= t('home') ?></a>
@@ -125,5 +130,7 @@ foreach ($_SESSION['cart'] as $item) {
 
 <!-- Til almashtirish: umumiy js/lang-switch.js fayli orqali (ishonchliroq) -->
 <script src="../js/lang-switch.js"></script>
-<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script></body>
+<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script><?php $shellMode='nav'; $shellFab=false; $cartCount = $cartCount ?? array_sum(array_map(fn($i)=>(int)($i['quantity']??1), $_SESSION['cart'] ?? [])); ?>
+<?php include __DIR__ . '/mobile_shell.php'; ?>
+</body>
 </html>

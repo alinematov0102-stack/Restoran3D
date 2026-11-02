@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS admin (
   role VARCHAR(20) NOT NULL DEFAULT 'admin',
   full_name VARCHAR(120) NULL,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
+  extra_pages VARCHAR(500) NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id), UNIQUE KEY uq_admin_username (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

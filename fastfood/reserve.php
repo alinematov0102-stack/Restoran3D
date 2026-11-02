@@ -1,5 +1,6 @@
 <?php
 // reserve.php - Mijoz stolni ma'lum vaqtga band qiladi
+session_start();
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/lang.php';
 
@@ -49,12 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Stol band qilish - FastFood</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><link rel="stylesheet" href="../css/mobile-app.css?v=1">
 <script src="../js/theme.js"></script>
 <script src="../js/parallax.js?v=1" defer></script>
 </head>
 <body>
 <header>
+    <button type="button" class="m-burger" aria-label="Menu" onclick="ffDrawer(true)"><span></span><span></span><span></span></button>
     <a class="logo" href="index.php"><img src="../img/logo-mark.svg" alt="" width="36" height="36"><span>FastFood</span></a>
     <div>
         <a href="index.php"><?= t('home') ?></a>
@@ -107,5 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- Til almashtirish: umumiy js/lang-switch.js fayli orqali (ishonchliroq) -->
 <script src="../js/lang-switch.js"></script>
-<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script></body>
+<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script><?php $shellMode='nav'; $shellFab=true; $cartCount = $cartCount ?? array_sum(array_map(fn($i)=>(int)($i['quantity']??1), $_SESSION['cart'] ?? [])); ?>
+<?php include __DIR__ . '/mobile_shell.php'; ?>
+</body>
 </html>

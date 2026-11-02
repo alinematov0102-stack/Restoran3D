@@ -1,34 +1,22 @@
 <?php
 // index.php - Bosh sahifa (mashhur mahsulotlar ko'rsatiladi)
-require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/lang.php';
-require_once __DIR__ . '/model3d_helper.php';
 require_once __DIR__ . '/hero_helper.php';
+require_once __DIR__ . '/menu_data.php';
 $heroImg = ff_hero_image();
-$m3dCol = ff_ensure_3d_column($pdo) ? 'model_3d' : 'NULL AS model_3d';
-
-// Tanlangan til (cookie orqali) - bazada saqlangan tarjimalarni ko'rsatish uchun
-$lang = $_COOKIE['ff_lang'] ?? 'uz';
-$nameCol = $lang === 'ru' ? 'name_ru' : ($lang === 'en' ? 'name_en' : 'name');
-$descCol = $lang === 'ru' ? 'description_ru' : ($lang === 'en' ? 'description_en' : 'description');
-
-$categories = $pdo->query("SELECT id, name, COALESCE(NULLIF($nameCol, ''), name) AS display_name FROM categories")->fetchAll();
-$products = $pdo->query("
-    SELECT id, image, $m3dCol, price,
-        COALESCE(NULLIF($nameCol, ''), name) AS display_name,
-        COALESCE(NULLIF($descCol, ''), description) AS display_desc
-    FROM products ORDER BY id DESC LIMIT 8
-")->fetchAll();
-
-session_start();
-$cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+$lang = ff_current_lang();
+$menu = ff_menu($lang);                       // keshdan (bazaga bormaydi)
+$categories = $menu['categories'];
+$products = array_slice($menu['products'], 0, 8);
+$cartCount = ff_cart_count();
+$shellMode = 'menu'; $shellCats = $categories; $shellActiveCat = -1;
 ?>
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars($_COOKIE['ff_lang'] ?? 'uz') ?>">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>FastFood - Bosh sahifa</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><link rel="stylesheet" href="../css/mobile-app.css?v=1">
 <link rel="stylesheet" href="../css/ff-3d.css?v=1">
 <script>document.documentElement.classList.add("ff-js")</script>
 <script src="../js/theme.js"></script>
@@ -37,6 +25,7 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 </head>
 <body>
 <header>
+    <button type="button" class="m-burger" aria-label="Menu" onclick="ffDrawer(true)"><span></span><span></span><span></span></button>
     <a class="logo" href="index.php"><img src="../img/logo-mark.svg" alt="" width="36" height="36"><span>FastFood</span></a>
     <div style="display:flex; align-items:center;">
         <a href="index.php"><?= t('home') ?></a>
@@ -126,5 +115,6 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 
 <!-- Til almashtirish: umumiy js/lang-switch.js fayli orqali (ishonchliroq) -->
 <script src="../js/lang-switch.js"></script>
-<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script></body>
+<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script><?php include __DIR__ . '/mobile_shell.php'; ?>
+</body>
 </html>

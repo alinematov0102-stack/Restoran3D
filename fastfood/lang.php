@@ -4,6 +4,7 @@
 
 $GLOBALS['ff_translations'] = [
     'uz' => [
+        'added_to_cart'=>'Savatga qo‘shildi ✓','menu_open'=>'Menyu','m_close'=>'Yopish','m_settings'=>'Sozlamalar',
         'home' => 'Bosh sahifa',
         'products' => 'Mahsulotlar',
         'reserve_table' => 'Stol band qilish',
@@ -71,6 +72,7 @@ $GLOBALS['ff_translations'] = [
         'admin_login_btn' => 'Kirish',
     ],
     'ru' => [
+        'added_to_cart'=>'Добавлено в корзину ✓','menu_open'=>'Меню','m_close'=>'Закрыть','m_settings'=>'Настройки',
         'home' => 'Главная',
         'products' => 'Продукты',
         'reserve_table' => 'Забронировать стол',
@@ -138,6 +140,7 @@ $GLOBALS['ff_translations'] = [
         'admin_login_btn' => 'Войти',
     ],
     'en' => [
+        'added_to_cart'=>'Added to cart ✓','menu_open'=>'Menu','m_close'=>'Close','m_settings'=>'Settings',
         'home' => 'Home',
         'products' => 'Products',
         'reserve_table' => 'Reserve a Table',

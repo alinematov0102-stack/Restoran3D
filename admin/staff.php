@@ -6,11 +6,13 @@ if (ff_role() !== 'admin') { header('Location: ' . ff_home()); exit; }
 require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
 ff_ensure_staff_schema($pdo);
+$schemaOk = true;
+try { $pdo->query('SELECT role, full_name, is_active, extra_pages FROM admin LIMIT 1')->fetch(); } catch (Throwable $e) { $schemaOk = false; $schemaErr = $e->getMessage(); }
 
 $msg = ''; $err = '';
 $me = (int)$_SESSION['admin_id'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($schemaOk && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!ff_csrf_ok()) { $err = 'Sessiya eskirgan, sahifani yangilang.'; }
     else {
         $action = $_POST['action'] ?? '';
@@ -47,6 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     } elseif ($action === 'toggle') {
                         if ($id === $me || $isLastAdmin) $err = 'Bu hisobni o‘chirib bo‘lmaydi.';
                         else { $pdo->prepare('UPDATE admin SET is_active=1-is_active WHERE id=?')->execute([$id]); $msg = 'Holat o‘zgardi.'; }
+                    } elseif ($action === 'extras') {
+                        $ok = array_keys(ff_assignable_pages());
+                        $sel = array_values(array_intersect($ok, array_map('strval', (array)($_POST['extras'] ?? []))));
+                        $pdo->prepare('UPDATE admin SET extra_pages=? WHERE id=?')->execute([implode(',', $sel), $id]);
+                        $msg = 'Ruxsatlar saqlandi.';
                     } elseif ($action === 'password') {
                         $p = (string)($_POST['password'] ?? '');
                         if (strlen($p) < 8) $err = 'Parol kamida 8 belgi bo‘lsin.';
@@ -60,14 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable $e) { error_log('staff: ' . $e->getMessage()); $err = 'Xatolik yuz berdi.'; }
     }
 }
-$rows = $pdo->query('SELECT id,username,full_name,role,is_active,created_at FROM admin ORDER BY id')->fetchAll();
+$rows = $schemaOk ? $pdo->query('SELECT id,username,full_name,role,is_active,extra_pages,created_at FROM admin ORDER BY id')->fetchAll() : [];
+if (!$schemaOk) { $err = 'Jadvalda role/full_name/is_active ustunlari yo‘q. TiDB SQL Editor’da install/migrate_roles.sql ni ishga tushiring. (' . htmlspecialchars($schemaErr ?? '') . ')'; }
 $csrf = ff_csrf();
 $lang = ff_current_lang();
 ?>
 <!doctype html><html lang="<?= htmlspecialchars($lang) ?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Xodimlar</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script></head><body>
 <?php include __DIR__ . '/sidebar.php'; ?>
 <main class="admin-content">
-  <div class="page-topline"><div><div class="eyebrow">XODIMLAR</div><h1>Xodimlar va rollar</h1><p class="admin-muted">Admin, menejer, afitsant, oshxona va kassir alohida ruxsatlar bilan ishlaydi. Har bir xodim faqat o‘z vazifasiga tegishli sahifalarni ko‘radi.</p></div></div>
+  <div class="page-topline"><div><div class="eyebrow">XODIMLAR</div><h1>Xodimlar va rollar</h1><p class="admin-muted">Afitsant, oshxona, kassir va boshqa xodimlar faqat o‘z ish joyini ko‘radi.</p></div></div>
   <?php if ($msg): ?><div class="alert alert-success"><?= htmlspecialchars($msg) ?></div><?php endif; ?>
   <?php if ($err): ?><div class="alert alert-error"><?= htmlspecialchars($err) ?></div><?php endif; ?>
 
@@ -123,6 +131,19 @@ $lang = ff_current_lang();
             <?php endif; ?>
           </td>
         </tr>
+        <?php if ($r['role'] !== 'admin'): $have = array_filter(array_map('trim', explode(',', (string)($r['extra_pages'] ?? '')))); ?>
+        <tr class="extras-row"><td colspan="5">
+          <details<?= $have ? ' open' : '' ?>><summary>Qo‘shimcha ruxsatlar <?= $have ? '(' . count($have) . ')' : '' ?></summary>
+            <form method="post" class="extras-form">
+              <input type="hidden" name="csrf" value="<?= $csrf ?>"><input type="hidden" name="action" value="extras"><input type="hidden" name="id" value="<?= (int)$r['id'] ?>">
+              <?php foreach (ff_assignable_pages() as $pg => $label): ?>
+                <label class="chk"><input type="checkbox" name="extras[]" value="<?= $pg ?>" <?= in_array($pg, $have, true) ? 'checked' : '' ?>> <?= htmlspecialchars($label) ?></label>
+              <?php endforeach; ?>
+              <button class="btn btn-sm" type="submit">Saqlash</button>
+            </form>
+          </details>
+        </td></tr>
+        <?php endif; ?>
       <?php endforeach; ?>
       </tbody>
     </table></div>
@@ -131,12 +152,12 @@ $lang = ff_current_lang();
   <div class="admin-panel" style="margin-top:18px">
     <div class="panel-kicker">RUXSATLAR</div><h2>Kim nimani ko‘radi</h2>
     <ul class="role-help">
+      <li><b>Qo‘shimcha ruxsatlar:</b> xodim rolidan tashqari bo‘limlarni ham ko‘rishi uchun, qatordagi “Qo‘shimcha ruxsatlar” ni oching va belgilang (masalan afitsantga Kirim/Chiqim).</li>
       <li><b>Admin</b> — hammasi, xodimlar va backup.</li>
       <li><b>Menejer</b> — bosh sahifa, katalog, stollar, moliya, hisobotlar, oshxona va afitsant ko‘rinishi.</li>
       <li><b>Afitsant</b> — faqat tezkor POS va chek.</li>
       <li><b>Oshxona</b> — faqat oshxona cheklari.</li>
       <li><b>Kassir</b> — buyurtma qabul qilish, chek, kirim/chiqim.</li>
-      <li><b>Operator</b> — faqat buyurtmalarni qabul qilish va holatini yangilash.</li>
     </ul>
   </div>
 </main><script src="../js/lang-switch.js"></script></body></html>

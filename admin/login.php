@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['admin_username'] = $admin['username'];
             $_SESSION['admin_role'] = isset(FF_ROLES[$admin['role'] ?? 'admin']) ? ($admin['role'] ?? 'admin') : 'waiter';
+            $_SESSION['admin_extra'] = (string)($admin['extra_pages'] ?? '');
             $_SESSION['admin_name'] = $admin['full_name'] ?? $admin['username'];
             $_SESSION['role_checked'] = time();
             header('Location: ' . ff_home());
@@ -79,5 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script src="../js/lang-switch.js"></script>
-<script src="../js/global-i18n.js" defer></script></body>
+<script src="../js/global-i18n.js" defer></script><script src="../js/universal-i18n.js" defer></script>
+</body>
 </html>

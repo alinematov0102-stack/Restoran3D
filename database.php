@@ -5,7 +5,6 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::ATTR_PERSISTENT => true,   // har so'rovda SSL ulanishni qayta o'rnatmaslik uchun
         PDO::ATTR_TIMEOUT => 10,
     ];
     if (DB_SSL === '1') {
@@ -13,7 +12,7 @@ try {
         $opts[PDO::MYSQL_ATTR_SSL_CA] = '/etc/ssl/certs/ca-certificates.crt';
         $opts[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
     }
-    $pdo = new PDO(
+    $GLOBALS['pdo'] = $pdo = new PDO(
         'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4',
         DB_USER, DB_PASS, $opts
     );

@@ -1,38 +1,25 @@
 <?php
 // products.php - Kategoriya bo'yicha mahsulotlarni ko'rsatish
-require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/lang.php';
-require_once __DIR__ . '/model3d_helper.php';
 require_once __DIR__ . '/hero_helper.php';
+require_once __DIR__ . '/menu_data.php';
 $heroImg = ff_hero_image();
-$m3dCol = ff_ensure_3d_column($pdo) ? 'model_3d' : 'NULL AS model_3d';
-
-$lang = $_COOKIE['ff_lang'] ?? 'uz';
-$nameCol = $lang === 'ru' ? 'name_ru' : ($lang === 'en' ? 'name_en' : 'name');
-$descCol = $lang === 'ru' ? 'description_ru' : ($lang === 'en' ? 'description_en' : 'description');
-
+$lang = ff_current_lang();
+$menu = ff_menu($lang);                       // keshdan (bazaga bormaydi)
 $categoryId = isset($_GET['category']) ? (int)$_GET['category'] : 0;
-$categories = $pdo->query("SELECT id, name, COALESCE(NULLIF($nameCol, ''), name) AS display_name FROM categories")->fetchAll();
-
-$baseSql = "SELECT id, image, $m3dCol, price, category_id,
-    COALESCE(NULLIF($nameCol, ''), name) AS display_name,
-    COALESCE(NULLIF($descCol, ''), description) AS display_desc
-    FROM products";
-
-if ($categoryId > 0) {
-    $stmt = $pdo->prepare($baseSql . " WHERE category_id = ? ORDER BY id DESC");
-    $stmt->execute([$categoryId]);
-} else {
-    $stmt = $pdo->query($baseSql . " ORDER BY id DESC");
-}
-$products = $stmt->fetchAll();
+$categories = $menu['categories'];
+$products = $categoryId > 0
+    ? array_values(array_filter($menu['products'], fn($p) => (int)$p['category_id'] === $categoryId))
+    : $menu['products'];
+$cartCount = ff_cart_count();
+$shellMode = 'menu'; $shellCats = $categories; $shellActiveCat = $categoryId;
 ?>
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars($_COOKIE['ff_lang'] ?? 'uz') ?>">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Mahsulotlar - FastFood</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><link rel="stylesheet" href="../css/mobile-app.css?v=1">
 <link rel="stylesheet" href="../css/ff-3d.css?v=1">
 <script>document.documentElement.classList.add("ff-js")</script>
 <script src="../js/theme.js"></script>
@@ -41,6 +28,7 @@ $products = $stmt->fetchAll();
 </head>
 <body>
 <header>
+    <button type="button" class="m-burger" aria-label="Menu" onclick="ffDrawer(true)"><span></span><span></span><span></span></button>
     <a class="logo" href="index.php"><img src="../img/logo-mark.svg" alt="" width="36" height="36"><span>FastFood</span></a>
     <div style="display:flex; align-items:center;">
         <a href="index.php"><?= t('home') ?></a>
@@ -106,5 +94,6 @@ $products = $stmt->fetchAll();
 
 <!-- Til almashtirish: umumiy js/lang-switch.js fayli orqali (ishonchliroq) -->
 <script src="../js/lang-switch.js"></script>
-<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script></body>
+<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script><?php include __DIR__ . '/mobile_shell.php'; ?>
+</body>
 </html>

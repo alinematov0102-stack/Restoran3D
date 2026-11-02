@@ -11,7 +11,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     const current = document.cookie.match(/(?:^|; )ff_lang=([^;]+)/)?.[1] || 'uz';
     document.documentElement.lang = current;
-    document.querySelectorAll('#langSwitch button').forEach(btn => {
+    document.querySelectorAll('#langSwitch button, .lang-switch button').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.lang === current);
     });
   });

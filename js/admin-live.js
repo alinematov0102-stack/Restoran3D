@@ -15,5 +15,5 @@
     last=d.count;localStorage.setItem('ff-last-new-orders',String(last));initialized=true;
   }
   async function poll(){try{const r=await fetch((location.pathname.indexOf('/delivery/')>-1?'../':'')+'notifications.php?_='+Date.now(),{cache:'no-store'});update(await r.json())}catch(e){}}
-  document.addEventListener('DOMContentLoaded',()=>{poll();setInterval(poll,10000)});
+  document.addEventListener('DOMContentLoaded',()=>{poll();setInterval(function(){if(!document.hidden)poll()},20000)});
 })();

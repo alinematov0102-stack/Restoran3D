@@ -9,12 +9,11 @@ const FF_ROLES = [
     'waiter'   => ['label' => 'Afitsant',     'home' => 'waiter.php'],
     'kitchen'  => ['label' => 'Oshxona',      'home' => 'kitchen.php'],
     'cashier'  => ['label' => 'Kassir',       'home' => 'receive_orders.php'],
-    'dispatch' => ['label' => 'Operator',     'home' => 'receive_orders.php'],
 ];
 
 // Sahifa => ruxsat berilgan rollar. Ro'yxatda yo'q sahifa faqat admin uchun.
 function ff_page_roles(): array {
-    $all = ['admin','manager','waiter','kitchen','cashier','dispatch'];
+    $all = ['admin','manager','waiter','kitchen','cashier'];
     return [
         'dashboard.php'       => ['admin','manager'],
         'catalog.php'         => ['admin','manager'],
@@ -26,7 +25,7 @@ function ff_page_roles(): array {
         'archive.php'         => ['admin','manager'],
         'check_3d.php'        => ['admin','manager'],
         'transactions.php'    => ['admin','manager','cashier'],
-        'receive_orders.php'  => ['admin','manager','cashier','dispatch'],
+        'receive_orders.php'  => ['admin','manager','cashier'],
         'receipt.php'         => ['admin','manager','cashier','waiter'],
         'waiter.php'          => ['admin','manager','waiter'],
         'kitchen.php'         => ['admin','manager','kitchen'],
@@ -45,8 +44,8 @@ function ff_script_key(): string {
 }
 
 function ff_role(): string {
-    // Rol aniqlanmagan eski sessiyaga admin huquqi berilmaydi. Qayta login talab qilinadi.
-    $r = $_SESSION['admin_role'] ?? 'waiter';
+    $r = $_SESSION['admin_role'] ?? 'admin'; // eski sessiyalar = admin
+    if ($r === 'dispatch') $r = 'cashier';    // olib tashlangan rol
     return isset(FF_ROLES[$r]) ? $r : 'waiter';
 }
 
@@ -55,11 +54,36 @@ function ff_home(?string $role = null): string {
     return FF_ROLES[$role]['home'] ?? 'login.php';
 }
 
+// Admin xodimga rolidan tashqari qo'shimcha bo'limlarni ham ochib berishi mumkin
+function ff_assignable_pages(): array {
+    return [
+        'dashboard.php'      => 'Bosh sahifa (statistika)',
+        'receive_orders.php' => 'Buyurtma olish',
+        'waiter.php'         => 'Afitsant (POS)',
+        'kitchen.php'        => 'Oshxona',
+        'transactions.php'   => 'Kirim / Chiqim',
+        'reports.php'        => 'Hisobotlar',
+        'catalog.php'        => 'Katalog (mahsulotlar)',
+        'tables.php'         => 'Stollar',
+        'hero.php'           => 'Bosh banner',
+        'archive.php'        => 'Arxiv',
+        'receipt.php'        => 'Chek',
+    ];
+}
+function ff_extra_pages(): array {
+    $raw = (string)($_SESSION['admin_extra'] ?? '');
+    $ok = array_keys(ff_assignable_pages());
+    return array_values(array_intersect(array_filter(array_map('trim', explode(',', $raw))), $ok));
+}
 function ff_can(string $page): bool {
     $role = ff_role();
     if ($role === 'admin') return true;
     $map = ff_page_roles();
-    return isset($map[$page]) && in_array($role, $map[$page], true);
+    if (isset($map[$page]) && in_array($role, $map[$page], true)) return true;
+    // kitchen_feed/action/ticket va notifications asosiy sahifaga ergashadi
+    $follow = ['kitchen_feed.php' => 'kitchen.php', 'kitchen_action.php' => 'kitchen.php', 'kitchen_ticket.php' => 'kitchen.php'];
+    $base = $follow[$page] ?? $page;
+    return in_array($base, ff_extra_pages(), true);
 }
 
 function ff_is_json_endpoint(string $key): bool {
@@ -75,19 +99,26 @@ function ff_revalidate(): void {
     if (($_SESSION['role_checked'] ?? 0) > $now - 300) return;
     try {
         global $pdo;
-        $st = $pdo->prepare('SELECT role,is_active FROM admin WHERE id=?');
+        if (empty($_SESSION['schema_ok'])) { ff_ensure_staff_schema($pdo); $_SESSION['schema_ok'] = 1; }
+        $st = $pdo->prepare('SELECT role,is_active,extra_pages FROM admin WHERE id=?');
         $st->execute([(int)$_SESSION['admin_id']]);
         $u = $st->fetch();
         if (!$u || (isset($u['is_active']) && (int)$u['is_active'] !== 1)) {
             $_SESSION = []; session_destroy(); return;
         }
         if (isset($u['role'])) $_SESSION['admin_role'] = $u['role'];
+        $_SESSION['admin_extra'] = (string)($u['extra_pages'] ?? '');
         $_SESSION['role_checked'] = $now;
     } catch (Throwable $e) { /* ustun hali yo'q bo'lsa e'tibor bermaymiz */ }
 }
 
 function ff_guard(): void {
     $key = ff_script_key();
+    // Katalogni o'zgartiradigan sahifalarda POST/so'rov bo'lsa mijoz menyusi keshini tozalaymiz
+    if (($_SERVER['REQUEST_METHOD'] === 'POST' || !empty($_GET)) && in_array($key, ['catalog.php','products.php','categories.php','hero.php','tables.php'], true)) {
+        require_once __DIR__ . '/../fastfood/cache.php';
+        ff_cache_bust();
+    }
     $pre = ff_base_prefix($key);
     ff_revalidate();
     if (empty($_SESSION['admin_id'])) {
@@ -105,22 +136,19 @@ function ff_guard(): void {
 
 // admin jadvaliga role/full_name/is_active ustunlarini bir marta qo'shadi
 function ff_ensure_staff_schema(PDO $pdo): void {
-    // Har bir ustunni alohida tekshiramiz: role mavjud bo'lib, full_name yo'q
-    // bo'lgan eski bazalarda ham qolgan ustunlar yaratilishi kerak.
-    $columns = [
-        'role'      => "ALTER TABLE admin ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'admin'",
-        'full_name' => "ALTER TABLE admin ADD COLUMN full_name VARCHAR(120) NULL",
-        'is_active' => "ALTER TABLE admin ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1",
-    ];
-    foreach ($columns as $column => $sql) {
-        try {
-            $check = $pdo->prepare('SHOW COLUMNS FROM admin LIKE ?');
-            $check->execute([$column]);
-            if (!$check->fetch()) $pdo->exec($sql);
-        } catch (Throwable $e) {
-            error_log('staff schema (' . $column . '): ' . $e->getMessage());
-        }
-    }
+    static $done = false;
+    if ($done) return; $done = true;
+    try {
+        $have = [];
+        foreach ($pdo->query('SHOW COLUMNS FROM admin')->fetchAll() as $c) $have[strtolower($c['Field'] ?? '')] = true;
+        $add = [
+            'role'        => "VARCHAR(20) NOT NULL DEFAULT 'admin'",
+            'full_name'   => 'VARCHAR(120) NULL',
+            'is_active'   => 'TINYINT(1) NOT NULL DEFAULT 1',
+            'extra_pages' => 'VARCHAR(500) NULL',
+        ];
+        foreach ($add as $col => $def) if (empty($have[$col])) $pdo->exec("ALTER TABLE admin ADD COLUMN $col $def");
+    } catch (Throwable $e) { error_log('staff schema: ' . $e->getMessage()); }
 }
 
 function ff_csrf(): string {

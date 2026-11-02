@@ -38,6 +38,7 @@ $menu = [
     <span></span><span></span><span></span>
   </button>
   <div class="topbar-brand"><img src="<?= $base ?>../img/logo-mark.svg" alt="" width="30" height="30"><strong>FastFood</strong></div>
+  <div class="topbar-lang lang-switch" id="langSwitchTop"><button onclick="setLanguage('uz')" data-lang="uz">UZ</button><button onclick="setLanguage('ru')" data-lang="ru">RU</button><button onclick="setLanguage('en')" data-lang="en">EN</button></div>
   <span class="topbar-role"><?= htmlspecialchars($roleLabel) ?></span>
 </div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>

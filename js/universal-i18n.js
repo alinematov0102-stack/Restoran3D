@@ -10,7 +10,7 @@
   var LETTER = /[A-Za-zА-Яа-яЁёЎўҚқҒғҲҳ]/;
   var CYR = /[А-Яа-яЁё]/;
   var BATCH = 60, PARALLEL = 3, MAX_LEN = 300;
-  var cache = {}, done = {}, pending = {}, timer = null, busy = false, observer = null, lang = 'uz', cacheKey = '';
+  var cache = {}, done = {}, pending = {}, failed = {}, timer = null, busy = false, observer = null, lang = 'uz', cacheKey = '';
 
   function getLang() { var m = document.cookie.match(/(?:^|; )ff_lang=([^;]+)/); return m ? m[1] : 'uz'; }
   function skipEl(el) {
@@ -69,7 +69,11 @@
   function post(texts) {
     return fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ target: lang, texts: texts }) })
       .then(function (r) { return r.json(); })
-      .then(function (j) { var tr = j.translations || {}; Object.keys(tr).forEach(function (k) { cache[k] = tr[k]; }); })
+      .then(function (j) {
+        var tr = j.translations || {};
+        Object.keys(tr).forEach(function (k) { cache[k] = tr[k]; });
+        texts.forEach(function (t) { if (!tr[t]) failed[t] = Date.now(); });   // olinmaganini 60 soniya qayta so'ramaymiz
+      })
       .catch(function () {});
   }
   function run() {
@@ -80,7 +84,7 @@
     var items = scan();
     applyItems(items.filter(function (i) { return cache[i.text]; }));   // keshdagini darhol qo'llaymiz
     var miss = {};
-    items.forEach(function (i) { if (!cache[i.text] && !pending[i.text]) miss[i.text] = 1; });
+    items.forEach(function (i) { if (!cache[i.text] && !pending[i.text] && !(failed[i.text] && Date.now() - failed[i.text] < 60000)) miss[i.text] = 1; });
     var list = Object.keys(miss);
     if (!list.length) { busy = false; return; }
     list.forEach(function (t) { pending[t] = 1; });
@@ -113,6 +117,14 @@
     Object.keys(cache).forEach(function (k) { done[cache[k]] = 1; });
     run(); observe();
   }
+  // alert/confirm oynalari ham tanlangan tilda (agar matn tarjima keshida bo'lsa)
+  ['alert', 'confirm'].forEach(function (fn) {
+    var orig = window[fn]; if (!orig) return;
+    window[fn] = function (m) {
+      var s = typeof m === 'string' ? m.trim() : m;
+      return orig.call(window, (lang !== 'uz' && typeof s === 'string' && cache[s]) ? cache[s] : m);
+    };
+  });
   window.FFUniversalTranslate = run;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
