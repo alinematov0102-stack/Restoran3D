@@ -25,7 +25,8 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN mkdir -p uploads/models uploads/products \
-    && chown -R www-data:www-data /var/www/html/uploads
+    && chown -R www-data:www-data /var/www/html/uploads \
+    && rm -rf /var/www/html/install /var/www/html/.env /var/www/html/INSTALL.md /var/www/html/INSTALL.txt
 
 # Render beradigan PORT ga moslash
 CMD sed -i "s/Listen 80/Listen ${PORT:-80}/" /etc/apache2/ports.conf \

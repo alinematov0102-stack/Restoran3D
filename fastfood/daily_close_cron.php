@@ -1,4 +1,5 @@
 <?php
+if (PHP_SAPI !== 'cli') { http_response_code(403); exit; } // faqat buyruq qatoridan
 // daily_close_cron.php - Har kuni soat 00:00 da aniq ishga tushirish uchun (Windows Task Scheduler)
 //
 // SOZLASH YO'RIQNOMASI:

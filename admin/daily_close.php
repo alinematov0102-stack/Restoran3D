@@ -1,4 +1,5 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) { http_response_code(404); exit; } // faqat include qilinadi
 // daily_close.php - O'tgan kunlarning jami savdosini avtomatik "kirim" ga o'tkazadi
 // Bu fayl admin/dashboard.php ochilganda avtomatik ishga tushadi (server sozlamasi shart emas),
 // yoki soat 00:00 da aniq ishga tushishi uchun Windows Task Scheduler orqali CLI'da chaqirilishi mumkin

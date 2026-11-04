@@ -12,11 +12,35 @@ if (isset($_SESSION['admin_id'])) {
 }
 
 $error = '';
+function ff_login_key(string $u): string {
+    $ip = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? ''))[0]);
+    return sys_get_temp_dir() . '/ff_login_' . md5($ip . '|' . mb_strtolower($u)) . '.json';
+}
+function ff_login_blocked(string $u): int {
+    $f = ff_login_key($u);
+    $d = is_file($f) ? json_decode((string)@file_get_contents($f), true) : null;
+    if (!is_array($d) || ($d['until'] ?? 0) <= time()) return 0;
+    return (int)$d['until'] - time();
+}
+function ff_login_fail(string $u): void {
+    $f = ff_login_key($u);
+    $d = is_file($f) ? json_decode((string)@file_get_contents($f), true) : null;
+    if (!is_array($d) || ($d['first'] ?? 0) < time() - 600) $d = ['n' => 0, 'first' => time(), 'until' => 0];
+    $d['n']++;
+    if ($d['n'] >= 6) { $d['until'] = time() + 600; $d['n'] = 0; $d['first'] = time(); }
+    @file_put_contents($f, json_encode($d));
+}
+function ff_login_ok(string $u): void { @unlink(ff_login_key($u)); }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
+    $wait = ff_login_blocked($username);
+    if ($wait > 0) {
+        $error = 'Juda ko‘p xato urinish. ' . ceil($wait / 60) . ' daqiqadan keyin qayta urinib ko‘ring.';
+        $stmt = null;
+    } else {
     $stmt = $pdo->prepare("SELECT * FROM admin WHERE username = ?");
     $stmt->execute([$username]);
     $admin = $stmt->fetch();
@@ -25,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($admin['is_active']) && (int)$admin['is_active'] !== 1) {
             $error = 'Bu hisob o\'chirilgan. Administrator bilan bog\'laning.';
         } else {
+            ff_login_ok($username);
             session_regenerate_id(true);
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['admin_username'] = $admin['username'];
@@ -36,7 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
     } else {
+        ff_login_fail($username);
         $error = 'Login yoki parol noto\'g\'ri.';
+    }
     }
 }
 ?>

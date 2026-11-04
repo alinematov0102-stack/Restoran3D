@@ -18,7 +18,8 @@ function ff_env(string $key, ?string $default = null): ?string {
             }
         }
     }
-    return $env[$key] ?? (getenv($key) !== false ? getenv($key) : $default);
+    $real = getenv($key);                       // Render Environment qiymatlari birinchi o'rinda
+    return $real !== false ? $real : ($env[$key] ?? $default);
 }
 
 define('DB_HOST', ff_env('DB_HOST', 'localhost'));

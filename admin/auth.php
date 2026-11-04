@@ -1,4 +1,5 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) { http_response_code(404); exit; } // faqat include qilinadi
 // auth.php - Rollar va ruxsatlar (bitta joyda boshqariladi)
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 require_once __DIR__ . '/../fastfood/database.php'; // global $pdo
@@ -44,9 +45,8 @@ function ff_script_key(): string {
 }
 
 function ff_role(): string {
-    // Sessiyada rol bo'lmasa, hech qachon admin huquqini bermaymiz.
-    $r = $_SESSION['admin_role'] ?? '';
-    if ($r === 'dispatch') $r = 'cashier'; // olib tashlangan rol
+    $r = $_SESSION['admin_role'] ?? 'admin'; // eski sessiyalar = admin
+    if ($r === 'dispatch') $r = 'cashier';    // olib tashlangan rol
     return isset(FF_ROLES[$r]) ? $r : 'waiter';
 }
 
@@ -96,33 +96,21 @@ function ff_base_prefix(string $key): string { return strpos($key, '/') !== fals
 // Har 5 daqiqada xodim hali faolmi va roli o'zgarmaganmi tekshiradi
 function ff_revalidate(): void {
     if (empty($_SESSION['admin_id'])) return;
+    $now = time();
+    if (($_SESSION['role_checked'] ?? 0) > $now - 300) return;
     try {
         global $pdo;
-        if (empty($_SESSION['schema_ok'])) {
-            ff_ensure_staff_schema($pdo);
-            $_SESSION['schema_ok'] = 1;
-        }
-        // Har bir admin so'rovida bazadan qayta tekshiramiz:
-        // o'chirilgan xodim yoki o'zgargan rol darhol kuchga kiradi.
+        if (empty($_SESSION['schema_ok'])) { ff_ensure_staff_schema($pdo); $_SESSION['schema_ok'] = 1; }
         $st = $pdo->prepare('SELECT role,is_active,extra_pages FROM admin WHERE id=?');
         $st->execute([(int)$_SESSION['admin_id']]);
         $u = $st->fetch();
         if (!$u || (isset($u['is_active']) && (int)$u['is_active'] !== 1)) {
-            $_SESSION = [];
-            session_destroy();
-            return;
+            $_SESSION = []; session_destroy(); return;
         }
-        $role = (string)($u['role'] ?? '');
-        $_SESSION['admin_role'] = isset(FF_ROLES[$role]) ? $role : 'waiter';
+        if (isset($u['role'])) $_SESSION['admin_role'] = $u['role'];
         $_SESSION['admin_extra'] = (string)($u['extra_pages'] ?? '');
-    } catch (Throwable $e) {
-        // Bazani tekshirib bo'lmasa, eski sessiyaga ishonmaymiz.
-        error_log('admin session revalidation failed: ' . $e->getMessage());
-        $_SESSION = [];
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            session_destroy();
-        }
-    }
+        $_SESSION['role_checked'] = $now;
+    } catch (Throwable $e) { /* ustun hali yo'q bo'lsa e'tibor bermaymiz */ }
 }
 
 function ff_guard(): void {

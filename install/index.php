@@ -4,12 +4,7 @@ declare(strict_types=1);
 $root = dirname(__DIR__);
 $envFile = $root . '/.env';
 $lockFile = __DIR__ . '/.installed';
-// O'rnatilgan loyiha yoki production serverda installer qayta ishlamasin.
-// Bu login/parolni tashqi odam tomonidan qayta o'rnatib yuborish xavfini kamaytiradi.
-if (is_file($lockFile) || is_file($envFile) || getenv('APP_ENV') === 'production') {
-    http_response_code(403);
-    exit('Installer is disabled.');
-}
+if (getenv('DB_HOST') !== false || getenv('APP_ENV') === 'production' || is_file($lockFile)) { http_response_code(403); exit('Installer is locked.'); }
 
 $error=''; $success=false;
 if ($_SERVER['REQUEST_METHOD']==='POST') {

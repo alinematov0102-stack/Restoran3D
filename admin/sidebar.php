@@ -1,4 +1,5 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) { http_response_code(404); exit; } // faqat include qilinadi
 require_once __DIR__ . '/auth.php';
 $currentPage = basename($_SERVER['PHP_SELF']);
 $inDelivery  = basename(dirname($_SERVER['PHP_SELF'])) === 'delivery';
