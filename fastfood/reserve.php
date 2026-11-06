@@ -50,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Stol band qilish - FastFood</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><link rel="stylesheet" href="../css/mobile-app.css?v=1">
-<script src="../js/theme.js"></script>
-<script src="../js/parallax.js?v=1" defer></script>
+<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5"><link rel="stylesheet" href="../css/mobile-app.css?v=5">
+<script src="../js/theme.js?v=5"></script>
+<script src="../js/parallax.js?v=5" defer></script>
 </head>
 <body>
 <header>
@@ -108,8 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <!-- Til almashtirish: umumiy js/lang-switch.js fayli orqali (ishonchliroq) -->
-<script src="../js/lang-switch.js"></script>
-<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script><?php $shellMode='nav'; $shellFab=true; $cartCount = $cartCount ?? array_sum(array_map(fn($i)=>(int)($i['quantity']??1), $_SESSION['cart'] ?? [])); ?>
+<script src="../js/lang-switch.js?v=5"></script>
+<script src="../js/global-i18n.js?v=5"></script><script src="../js/universal-i18n.js?v=5"></script><?php $shellMode='nav'; $shellFab=true; $cartCount = $cartCount ?? array_sum(array_map(fn($i)=>(int)($i['quantity']??1), $_SESSION['cart'] ?? [])); ?>
 <?php include __DIR__ . '/mobile_shell.php'; ?>
 </body>
 </html>

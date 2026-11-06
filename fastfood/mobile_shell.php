@@ -77,4 +77,4 @@ $cur = basename($_SERVER['SCRIPT_NAME'] ?? '');
 <a class="m-fab" href="cart.php" aria-label="<?= htmlspecialchars(t('cart')) ?>">🛒<b class="m-fab-badge" data-cart-count <?= $cartCount > 0 ? '' : 'hidden' ?>><?= (int)$cartCount ?></b></a>
 <?php endif; ?>
 <div class="m-toast" id="mToast" role="status" aria-live="polite"><span id="mToastText"><?= t('added_to_cart') ?></span></div>
-<script src="../js/mobile-app.js?v=1" defer></script>
+<script src="../js/mobile-app.js?v=5" defer></script>

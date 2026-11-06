@@ -17,7 +17,7 @@ for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i days"));$days[]=['label'=>da
 $max=max(1,max(array_column($days,'value')));
 $lang=ff_current_lang();
 ?>
-<!doctype html><html lang="<?=$lang?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Dashboard</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script><script src="../js/admin-i18n.js" defer></script><script src="../js/parallax.js?v=1" defer></script>
+<!doctype html><html lang="<?=$lang?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Dashboard</title><link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5"><script src="../js/theme.js?v=5"></script><script src="../js/admin-i18n.js?v=5" defer></script><script src="../js/parallax.js?v=5" defer></script>
 </head><body>
 <?php include __DIR__.'/sidebar.php'; ?>
 <main class="admin-content">
@@ -35,4 +35,4 @@ $lang=ff_current_lang();
   </section>
   <section class="finance-mini-grid"><div class="mini-finance in"><span data-i18n="Kirim">Kirim</span><b><?=number_format($totalIn,0,'',' ')?> so‘m</b></div><div class="mini-finance out"><span data-i18n="Chiqim">Chiqim</span><b><?=number_format($totalOut,0,'',' ')?> so‘m</b></div><div class="mini-finance"><span data-i18n="Jami buyurtmalar">Jami buyurtmalar</span><b><?=$totalOrders?></b></div><div class="mini-finance"><span data-i18n="Mahsulotlar">Mahsulotlar</span><b><?=$totalProducts?></b></div></section>
 <div class="admin-panel" style="margin-top:18px"><div class="panel-heading"><div><div class="panel-kicker">KITCHEN</div><h2>Oshxona</h2></div><a class="btn" href="kitchen.php">🍳 Buyurtmalarni ko‘rish</a></div><p class="admin-muted">Yangi buyurtmalar oshxona cheki ko‘rinishida shu yerda chiqadi.</p></div>
-</main><script src="../js/lang-switch.js"></script></body></html>
+</main><script src="../js/lang-switch.js?v=5"></script></body></html>

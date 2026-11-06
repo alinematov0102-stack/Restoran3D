@@ -84,7 +84,7 @@ $menu = [
   window.addEventListener('resize',function(){if(window.innerWidth>1024)set(false)});
 })();
 </script>
-<script src="<?= $base ?>../js/admin-live.js" defer></script>
-<script src="<?= $base ?>../js/lang-switch.js" defer></script>
-<script src="<?= $base ?>../js/admin-i18n.js" defer></script>
-<script src="<?= $base ?>../js/global-i18n.js" defer></script><script src="<?= $base ?>../js/universal-i18n.js" defer></script>
+<script src="<?= $base ?>../js/admin-live.js?v=5" defer></script>
+<script src="<?= $base ?>../js/lang-switch.js?v=5" defer></script>
+<script src="<?= $base ?>../js/admin-i18n.js?v=5" defer></script>
+<script src="<?= $base ?>../js/global-i18n.js?v=5" defer></script><script src="<?= $base ?>../js/universal-i18n.js?v=5" defer></script>

@@ -19,12 +19,12 @@ $shellMode = 'menu'; $shellCats = $categories; $shellActiveCat = $categoryId;
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Mahsulotlar - FastFood</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><link rel="stylesheet" href="../css/mobile-app.css?v=1">
-<link rel="stylesheet" href="../css/ff-3d.css?v=1">
+<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5"><link rel="stylesheet" href="../css/mobile-app.css?v=5">
+<link rel="stylesheet" href="../css/ff-3d.css?v=5">
 <script>document.documentElement.classList.add("ff-js")</script>
-<script src="../js/theme.js"></script>
-<script src="../js/ff-3d.js?v=1" defer></script>
-<script src="../js/parallax.js?v=1" defer></script>
+<script src="../js/theme.js?v=5"></script>
+<script src="../js/ff-3d.js?v=5" defer></script>
+<script src="../js/parallax.js?v=5" defer></script>
 </head>
 <body>
 <header>
@@ -93,7 +93,7 @@ $shellMode = 'menu'; $shellCats = $categories; $shellActiveCat = $categoryId;
 <?php include __DIR__ . '/product_modal.php'; ?>
 
 <!-- Til almashtirish: umumiy js/lang-switch.js fayli orqali (ishonchliroq) -->
-<script src="../js/lang-switch.js"></script>
-<script src="../js/global-i18n.js"></script><script src="../js/universal-i18n.js"></script><?php include __DIR__ . '/mobile_shell.php'; ?>
+<script src="../js/lang-switch.js?v=5"></script>
+<script src="../js/global-i18n.js?v=5"></script><script src="../js/universal-i18n.js?v=5"></script><?php include __DIR__ . '/mobile_shell.php'; ?>
 </body>
 </html>

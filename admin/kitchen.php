@@ -11,7 +11,7 @@ $orders = $pdo->query("SELECT * FROM orders WHERE status IN ('qabul qilingan','t
 <head>
 <meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FastFood — Oshxona</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2"><script src="../js/theme.js"></script>
+<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5"><script src="../js/theme.js?v=5"></script>
 <style>
 .kitchen-head{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}.kitchen-head h1{margin:0;color:var(--text)}
 .kitchen-controls{display:flex;gap:8px;align-items:center}.kitchen-controls .auto{display:flex;align-items:center;gap:7px;padding:10px 12px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;font-size:12px;font-weight:800}
@@ -25,7 +25,7 @@ $orders = $pdo->query("SELECT * FROM orders WHERE status IN ('qabul qilingan','t
 @media(max-width:1050px){.kitchen-grid{grid-template-columns:repeat(2,minmax(280px,1fr))}}@media(max-width:700px){.kitchen-grid{grid-template-columns:1fr}.kitchen-head{align-items:flex-start;flex-direction:column}.ticket-meta{grid-template-columns:1fr}}
 @media print{html,body{background:#fff!important;color:#000!important}.sidebar,.kitchen-head,.ticket-actions{display:none!important}.admin-content{margin:0!important;padding:0!important}.kitchen-grid{display:block}.kitchen-ticket{display:none!important;box-shadow:none;border:0!important;margin:0}.kitchen-ticket.printing{display:block!important;width:80mm;max-width:80mm;margin:0 auto;padding:5mm;background:#fff;color:#000;border-radius:0}.kitchen-ticket.printing *{color:#000!important}.ticket-meta div{background:#fff;border:1px solid #ddd}.ticket-item{padding:5px 0}.ticket-total,.ticket-note{background:#fff;border:1px solid #ddd}}
 </style>
-<script src="../js/parallax.js?v=1" defer></script>
+<script src="../js/parallax.js?v=5" defer></script>
 </head>
 <body>
 <?php include __DIR__.'/sidebar.php'; ?>
@@ -46,7 +46,7 @@ $orders = $pdo->query("SELECT * FROM orders WHERE status IN ('qabul qilingan','t
 </div>
 <?php if(!$orders): ?><div class="empty-kitchen"><div style="font-size:42px">🍳</div><h2 data-i18n="Oshxona hozir bo‘sh">Oshxona hozir bo‘sh</h2><p data-i18n="Yangi buyurtmalar shu yerda avtomatik paydo bo‘ladi.">Yangi buyurtmalar shu yerda avtomatik paydo bo‘ladi.</p></div><?php endif; ?>
 </main>
-<script src="../js/lang-switch.js"></script>
+<script src="../js/lang-switch.js?v=5"></script>
 <script>
 let known=new Set(<?=json_encode(array_map(fn($o)=>(int)$o['id'],$orders))?>);
 function printTicket(id){document.querySelectorAll('.kitchen-ticket').forEach(x=>x.classList.remove('printing'));const el=document.querySelector('.kitchen-ticket[data-id="'+id+'"]');if(!el)return;el.classList.add('printing');window.print();setTimeout(()=>el.classList.remove('printing'),800)}

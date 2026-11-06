@@ -81,10 +81,10 @@ foreach ($reservations as $r) {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Stollar - Admin</title>
-<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme-elegant.css?v=2">
-<script src="../js/theme.js"></script>
-<script src="../js/admin-i18n.js" defer></script>
-<script src="../js/parallax.js?v=1" defer></script>
+<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5">
+<script src="../js/theme.js?v=5"></script>
+<script src="../js/admin-i18n.js?v=5" defer></script>
+<script src="../js/parallax.js?v=5" defer></script>
 </head>
 <body>
 <?php include __DIR__ . '/sidebar.php'; ?>
@@ -153,6 +153,6 @@ foreach ($reservations as $r) {
     </div>
 </div>
 
-<script src="../js/lang-switch.js"></script>
+<script src="../js/lang-switch.js?v=5"></script>
 </body>
 </html>

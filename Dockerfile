@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Apache: .htaccess, ServerName ogohlantirishini o'chirish, siqish va kesh
 RUN printf 'ServerName localhost\n<Directory /var/www/html>\n    AllowOverride All\n    Require all granted\n</Directory>\n' \
         > /etc/apache2/conf-available/app.conf \
-    && printf '<IfModule mod_deflate.c>\n  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml\n</IfModule>\n<IfModule mod_expires.c>\n  ExpiresActive On\n  ExpiresByType text/css "access plus 7 days"\n  ExpiresByType application/javascript "access plus 7 days"\n  ExpiresByType image/svg+xml "access plus 30 days"\n  ExpiresByType image/webp "access plus 30 days"\n  ExpiresByType image/jpeg "access plus 30 days"\n  ExpiresByType image/png "access plus 30 days"\n  ExpiresByType model/gltf-binary "access plus 30 days"\n</IfModule>\n' \
+    && printf '<IfModule mod_deflate.c>\n  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml\n</IfModule>\n<IfModule mod_expires.c>\n  ExpiresActive On\n  ExpiresByType image/svg+xml "access plus 30 days"\n  ExpiresByType image/webp "access plus 30 days"\n  ExpiresByType image/jpeg "access plus 30 days"\n  ExpiresByType image/png "access plus 30 days"\n  ExpiresByType model/gltf-binary "access plus 30 days"\n</IfModule>\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(css|js)$">\n    Header set Cache-Control "no-cache"\n  </FilesMatch>\n</IfModule>\n' \
         > /etc/apache2/conf-available/perf.conf \
     && a2enconf app perf
 

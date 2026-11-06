@@ -31,7 +31,7 @@ $checks = [
 <table><?php foreach ($checks as [$n, $v, $ok]): ?><tr><td><?= $ok ? '<span class="ok">✓</span>' : '<span class="bad">✗</span>' ?></td><td><?= htmlspecialchars($n) ?></td><td><?= htmlspecialchars($v) ?></td></tr><?php endforeach; ?></table>
 <h3>3D ko‘rsatkich sinovi</h3>
 <p>Quyida astronavt aylanib turishi kerak. Bo‘sh bo‘lsa — brauzer konsolini (F12 → Console) oching va xatoni yuboring.</p>
-<script type="module" src="../js/model-viewer.min.js"></script>
+<script type="module" src="../js/model-viewer.min.js?v=5"></script>
 <model-viewer id="t" camera-controls auto-rotate style="width:100%;height:320px;background:#eee;border-radius:12px" environment-image="neutral"
   src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"></model-viewer>
 <p id="r" style="font-weight:800">Tekshirilmoqda…</p>
