@@ -1,0 +1,12 @@
+{
+  "name": "FastFood",
+  "short_name": "FastFood",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf6ef",
+  "theme_color": "#9b2c3a",
+  "icons": [
+    { "src": "../img/logo-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

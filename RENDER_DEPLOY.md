@@ -13,3 +13,9 @@
 - Xodimlar: rol + qo'shimcha ruxsatlar (Xodimlar bo'limi).
 - Admin paneldan "Yetkazib berish" olib tashlandi.
 - Tarjima: sahifadagi hamma matn, select, placeholder va keyin yuklangan kontent tarjima qilinadi.
+
+## v7: Vue mijoz ilovasi
+- Yangi mijoz sayti: `https://SAYT/shop/` (Vue 3). Eski PHP sayt (`/fastfood/`) ishlashda qoladi.
+- API: `/api/index.php` (menyu, savat, buyurtma, stol band qilish).
+- Manba kodi: `frontend/` (o'zgartirish uchun: `cd frontend && npm install && npm run build` -> `shop/` yangilanadi).
+- Asosiy sahifa qilmoqchi bo'lsangiz: ildizdagi `index.php` ni `/shop/` ga yo'naltiring.
