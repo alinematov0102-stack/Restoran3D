@@ -62,7 +62,7 @@ $cur = hero_current($dir);
 $lang = ff_current_lang();
 ?>
 <!doctype html><html lang="<?= $lang ?>"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Bosh sahifa rasmi</title>
-<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5"><script src="../js/theme.js?v=5"></script>
+<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=6"><script src="../js/theme.js?v=5"></script>
 <style>.hero-admin-prev{height:260px;border-radius:16px;border:1px solid var(--line);background:var(--surface-2) center/cover no-repeat;display:grid;place-items:center;color:var(--muted);font-weight:700;margin:16px 0}.hero-admin-box{max-width:760px}.hero-admin-box ul{margin:8px 0 0 18px;color:var(--muted);font-size:13px;line-height:1.7}</style><script src="../js/parallax.js?v=5" defer></script>
 </head>
 <body><?php include __DIR__ . '/sidebar.php'; ?>

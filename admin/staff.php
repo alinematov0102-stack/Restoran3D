@@ -72,7 +72,7 @@ if (!$schemaOk) { $err = 'Jadvalda role/full_name/is_active ustunlari yo‘q. Ti
 $csrf = ff_csrf();
 $lang = ff_current_lang();
 ?>
-<!doctype html><html lang="<?= htmlspecialchars($lang) ?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Xodimlar</title><link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5"><script src="../js/theme.js?v=5"></script></head><body>
+<!doctype html><html lang="<?= htmlspecialchars($lang) ?>"><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FastFood — Xodimlar</title><link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=6"><script src="../js/theme.js?v=5"></script></head><body>
 <?php include __DIR__ . '/sidebar.php'; ?>
 <main class="admin-content">
   <div class="page-topline"><div><div class="eyebrow">XODIMLAR</div><h1>Xodimlar va rollar</h1><p class="admin-muted">Afitsant, oshxona, kassir va boshqa xodimlar faqat o‘z ish joyini ko‘radi.</p></div></div>

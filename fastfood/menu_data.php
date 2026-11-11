@@ -13,7 +13,7 @@ function ff_db(): PDO {
 
 function ff_menu(string $lang): array {
     if (!in_array($lang, ['uz', 'ru', 'en'], true)) $lang = 'uz';
-    return ff_cache_remember('menu:' . $lang, 120, function () use ($lang) {
+    return ff_cache_remember('menu:' . $lang, 600, function () use ($lang) {
         $pdo = ff_db();
         $has3d = ff_cache_remember('has3d', 3600, fn() => ff_ensure_3d_column($pdo));
         $m3d = $has3d ? 'model_3d' : 'NULL AS model_3d';

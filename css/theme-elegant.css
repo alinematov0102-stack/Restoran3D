@@ -443,3 +443,8 @@ html { -webkit-text-size-adjust: 100%; }
 .admin-topbar .topbar-lang { background: transparent !important; border: 0 !important; padding: 0 !important; box-shadow: none !important; }
 .admin-topbar .topbar-lang button { background: transparent !important; color: #f4ece0 !important; border: 1px solid rgba(201,162,77,.35) !important; opacity: .9; }
 .admin-topbar .topbar-lang button.active { background: rgba(201,162,77,.28) !important; color: #ecc978 !important; opacity: 1; }
+
+.seed-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 0 16px;padding:14px 16px;border:1px dashed var(--line);border-radius:16px;background:var(--surface)}
+.seed-bar .admin-muted{font-size:14px}
+#seedModal .chk{display:flex;gap:8px;align-items:center;min-height:40px}
+#seedModal .chk input{width:18px;height:18px;min-height:0}

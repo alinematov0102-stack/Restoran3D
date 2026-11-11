@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, watch, ref, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { state, t, setLang, toggleTheme, loadMenu, loadCart, catIcon } from './store'
 import ProductSheet from './components/ProductSheet.vue'
@@ -16,10 +16,22 @@ const navTabs = computed(() => [
   { to: '/reserve', icon: '📅', label: t('reserve_short'), on: route.name === 'reserve' },
   { to: '/orders', icon: '🧾', label: t('orders_short'), on: route.name === 'orders' || route.name === 'order' }
 ])
+const tabbar = ref(null)
+const more = ref({ left: false, right: false })
+function updateMore() {
+  const el = tabbar.value; if (!el) return
+  more.value = { left: el.scrollLeft > 6, right: el.scrollWidth - el.clientWidth - el.scrollLeft > 6 }
+}
+async function focusActiveTab() {
+  await nextTick(); const el = tabbar.value; if (!el) return
+  const on = el.querySelector('a.on'); if (on && on.scrollIntoView) { try { on.scrollIntoView({ inline: 'center', block: 'nearest' }) } catch (e) {} }
+  updateMore()
+}
 function close() { state.drawer = false }
-watch(() => route.fullPath, close)
+watch(() => route.fullPath, () => { close(); focusActiveTab() })
+watch(cats, focusActiveTab)
 watch(() => state.drawer, v => { document.body.style.overflow = v ? 'hidden' : '' })
-onMounted(() => { loadMenu(); loadCart() })
+onMounted(() => { loadMenu(); loadCart(); window.addEventListener('resize', updateMore); focusActiveTab() })
 </script>
 
 <template>
@@ -62,7 +74,7 @@ onMounted(() => { loadMenu(); loadCart() })
   </aside>
 
   <!-- Pastki tablar -->
-  <nav class="tabbar">
+  <nav ref="tabbar" class="tabbar" :class="{ 'more-right': more.right, 'more-left': more.left }" @scroll.passive="updateMore">
     <template v-if="menuMode">
       <router-link to="/menu" :class="{ on: activeCat === 0 }"><i>🍽️</i><span>{{ t('all') }}</span></router-link>
       <router-link v-for="c in cats" :key="c.id" :to="'/menu/' + c.id" :class="{ on: activeCat === c.id }"><i>{{ catIcon(c.name) }}</i><span>{{ c.name }}</span></router-link>

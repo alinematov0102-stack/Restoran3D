@@ -19,3 +19,7 @@
 - API: `/api/index.php` (menyu, savat, buyurtma, stol band qilish).
 - Manba kodi: `frontend/` (o'zgartirish uchun: `cd frontend && npm install && npm run build` -> `shop/` yangilanadi).
 - Asosiy sahifa qilmoqchi bo'lsangiz: ildizdagi `index.php` ni `/shop/` ga yo'naltiring.
+
+## v8
+- Katalog -> "Tayyor kategoriyalar": Taomlar, Ichimliklar, Desertlar va boshqalarni bir bosishda qo'shish.
+- Tez ishlash: kichik rasmlar (api/thumb.php), menyu mahalliy keshi, DB indekslari (login paytida avtomatik), uzoq keshlanadigan versiyali fayllar.

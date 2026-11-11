@@ -1,5 +1,5 @@
 <script setup>
-import { state, t, money, img, cartOp } from '../store'
+import { state, t, money, thumb, onImgError, cartOp } from '../store'
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import { state, t, money, img, cartOp } from '../store'
   <template v-else>
     <div class="cart-list">
       <article v-for="it in state.cart.items" :key="it.id" class="cart-row">
-        <img :src="img(it.image)" :alt="it.name" loading="lazy" />
+        <img :src="thumb(it.image, 160)" :alt="it.name" loading="lazy" @error="onImgError($event, it.image)" />
         <div class="cart-info"><h3>{{ it.name }}</h3><b class="price">{{ money(it.price) }}</b></div>
         <div class="stepper"><button @click="cartOp('dec', it.id, true)">−</button><span>{{ it.quantity }}</span><button @click="cartOp('inc', it.id, true)">+</button></div>
         <button class="trash" :aria-label="t('remove')" @click="cartOp('remove', it.id, true)">🗑️</button>

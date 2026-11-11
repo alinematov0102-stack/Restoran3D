@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Stol band qilish - FastFood</title>
-<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5"><link rel="stylesheet" href="../css/mobile-app.css?v=5">
+<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=6"><link rel="stylesheet" href="../css/mobile-app.css?v=5">
 <script src="../js/theme.js?v=5"></script>
 <script src="../js/parallax.js?v=5" defer></script>
 </head>

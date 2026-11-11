@@ -1,5 +1,5 @@
 <script setup>
-import { state, t, money, img, cartOp, qtyInCart } from '../store'
+import { state, t, money, thumb, onImgError, cartOp, qtyInCart } from '../store'
 const props = defineProps({ p: Object })
 function open() { state.sheet = props.p }
 </script>
@@ -7,7 +7,7 @@ function open() { state.sheet = props.p }
 <template>
   <article class="row">
     <button class="row-img" @click="open" :aria-label="p.name">
-      <img :src="img(p.image)" :alt="p.name" loading="lazy" decoding="async" />
+      <img :src="thumb(p.image, 240)" :alt="p.name" loading="lazy" decoding="async" @error="onImgError($event, p.image)" />
       <span v-if="p.model" class="chip3d">3D</span>
     </button>
     <div class="row-info">

@@ -159,3 +159,50 @@ function ff_csrf(): string {
 function ff_csrf_ok(): bool {
     return !empty($_SESSION['csrf']) && hash_equals($_SESSION['csrf'], (string)($_POST['csrf'] ?? ''));
 }
+
+// Tayyor kategoriyalar (Katalog bo'limida bir bosishda qo'shiladi). Kalit => [UZ, RU, EN]
+function ff_default_categories(): array {
+    return [
+        'taomlar'     => ['Taomlar', 'Блюда', 'Main dishes'],
+        'ichimliklar' => ['Ichimliklar', 'Напитки', 'Drinks'],
+        'desertlar'   => ['Desertlar', 'Десерты', 'Desserts'],
+        'salatlar'    => ['Salatlar', 'Салаты', 'Salads'],
+        'pitsa'       => ['Pitsa', 'Пицца', 'Pizza'],
+        'burger'      => ['Burger', 'Бургеры', 'Burgers'],
+        'lavash'      => ['Lavash', 'Лаваш', 'Lavash'],
+        'zakuskilar'  => ['Zakuskilar', 'Закуски', 'Snacks'],
+        'shorvalar'   => ['Sho‘rvalar', 'Супы', 'Soups'],
+        'kofe'        => ['Kofe va choy', 'Кофе и чай', 'Coffee & tea'],
+        'setlar'      => ['Setlar', 'Сеты', 'Combos'],
+        'non'         => ['Non va pishiriqlar', 'Выпечка', 'Bakery'],
+    ];
+}
+
+// Tez ishlashi uchun kerakli indekslarni bir marta yaratadi (30 kunda bir tekshiradi)
+function ff_ensure_indexes(PDO $pdo): void {
+    static $done = false;
+    if ($done) return; $done = true;
+    require_once __DIR__ . '/../fastfood/cache.php';
+    if (ff_cache_get('idx_v1', 86400 * 30) !== null) return;
+    $want = [
+        'products'          => [['idx_products_cat', 'category_id']],
+        'orders'            => [['idx_orders_status', 'status'], ['idx_orders_created', 'created_at']],
+        'order_items'       => [['idx_items_order', 'order_id']],
+        'reservations'      => [['idx_resv_table', 'table_id, status']],
+        'restaurant_tables' => [['idx_tables_number', 'table_number']],
+    ];
+    $ok = true;
+    foreach ($want as $table => $list) {
+        try {
+            $first = [];
+            foreach ($pdo->query("SHOW INDEX FROM `$table`")->fetchAll() as $r) {
+                if ((int)($r['Seq_in_index'] ?? 1) === 1) $first[strtolower($r['Column_name'] ?? '')] = true;
+            }
+            foreach ($list as [$name, $cols]) {
+                $c1 = strtolower(trim(explode(',', $cols)[0]));
+                if (empty($first[$c1])) $pdo->exec("CREATE INDEX $name ON `$table` ($cols)");
+            }
+        } catch (Throwable $e) { $ok = false; error_log('index ' . $table . ': ' . $e->getMessage()); }
+    }
+    if ($ok) ff_cache_set('idx_v1', 1);
+}

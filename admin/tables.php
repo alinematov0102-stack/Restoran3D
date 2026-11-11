@@ -81,7 +81,7 @@ foreach ($reservations as $r) {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title>Stollar - Admin</title>
-<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5">
+<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=6">
 <script src="../js/theme.js?v=5"></script>
 <script src="../js/admin-i18n.js?v=5" defer></script>
 <script src="../js/parallax.js?v=5" defer></script>

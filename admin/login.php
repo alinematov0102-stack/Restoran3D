@@ -5,6 +5,7 @@ require_once __DIR__ . '/../fastfood/database.php';
 require_once __DIR__ . '/../fastfood/lang.php';
 require_once __DIR__ . '/auth.php';
 ff_ensure_staff_schema($pdo);
+ff_ensure_indexes($pdo);
 
 if (isset($_SESSION['admin_id'])) {
     header('Location: ' . ff_home());
@@ -72,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
 <title><?= t('admin_login_title') ?></title>
-<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=5">
+<link rel="stylesheet" href="../css/style.css?v=5"><link rel="stylesheet" href="../css/theme-elegant.css?v=6">
 <script src="../js/theme.js?v=5"></script>
 <script src="../js/admin-i18n.js?v=5" defer></script>
 <script src="../js/parallax.js?v=5" defer></script>

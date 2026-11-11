@@ -14,6 +14,7 @@ if (!function_exists('ff_cat_icon')) {
         $n = mb_strtolower($name);
         $map = [
             '⭐' => ['aksiya', 'акци', 'promo', 'sale', 'chegirma'],
+            '🍛' => ['taom', 'ovqat', 'блюд', 'main', 'dish', 'горяч', 'issiq'],
             '🍕' => ['pitsa', 'pizza', 'пицц'],
             '🍔' => ['burger', 'бургер', 'gamburger'],
             '🌯' => ['lavash', 'shaurma', 'shawarma', 'шаурм', 'лаваш', 'rolл', 'roll', 'ролл', 'doner', 'донер'],
@@ -21,7 +22,10 @@ if (!function_exists('ff_cat_icon')) {
             '🥤' => ['ichimlik', 'napit', 'напит', 'drink', 'cola', 'кола', 'sok', 'сок', 'juice', 'limonad'],
             '☕' => ['kofe', 'coffee', 'кофе', 'choy', 'чай', 'tea'],
             '🥗' => ['salat', 'салат', 'salad'],
-            '🍰' => ['desert', 'десерт', 'shirin', 'tort', 'торт', 'dessert', 'muzqaymoq', 'морожен'],
+            '🍰' => ['desert', 'десерт', 'shirin', 'tort', 'торт', 'dessert'],
+            '🍦' => ['muzqaymoq', 'морожен', 'ice'],
+            '🥐' => ['non', 'хлеб', 'bread', 'pishiriq', 'выпечк', 'bakery', 'somsa', 'самс'],
+            '🍎' => ['meva', 'фрукт', 'fruit', 'fresh'],
             '🍲' => ['sho', 'суп', 'soup', 'osh', 'plov', 'плов', 'lag'],
             '🍱' => ['set', 'combo', 'комбо', 'сет'],
             '🍗' => ['tovuq', 'chicken', 'кур', 'nugget', 'крыл', 'wings'],

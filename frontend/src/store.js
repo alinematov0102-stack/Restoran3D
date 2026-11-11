@@ -46,8 +46,14 @@ export function toggleTheme() {
 }
 export async function loadMenu() {
   state.menuError = false
+  // Oldingi menyu darhol ko'rsatiladi (tez ochilish), orqada yangisi yuklanadi
+  const key = 'ff-menu-' + state.lang
+  try { const c = JSON.parse(localStorage.getItem(key) || 'null'); if (c && c.products) state.menu = c } catch (e) {}
   const r = await api('menu')
-  if (r.ok) state.menu = r; else { state.menuError = true }
+  if (r.ok) {
+    state.menu = r
+    try { localStorage.setItem(key, JSON.stringify(r)) } catch (e) {}
+  } else if (!state.menu) { state.menuError = true }
 }
 export async function loadCart() {
   const r = await api('cart')
@@ -71,16 +77,26 @@ export function showToast(msg) {
   state.toast = msg; state.toastShow = true
   clearTimeout(tt); tt = setTimeout(() => { state.toastShow = false }, 1700)
 }
+// Kichik rasm (tez yuklanadi). Xato bo'lsa, asl rasm ko'rsatiladi (onImgError).
+export function thumb(path, w) {
+  if (!path || /^https?:/.test(path)) return img(path)
+  return '../api/thumb.php?p=' + encodeURIComponent(path) + '&w=' + (w || 240)
+}
+export function onImgError(e, path) {
+  const el = e.target
+  if (el.dataset.fb) return
+  el.dataset.fb = '1'; el.src = img(path)
+}
 export function img(path) { return path ? (/^https?:/.test(path) ? path : '../' + path) : '' }
 export function catIcon(name) {
   const n = String(name || '').toLowerCase()
   const map = [
-    ['⭐', ['aksiya', 'акци', 'promo', 'sale']], ['🍕', ['pitsa', 'pizza', 'пицц']], ['🍔', ['burger', 'бургер']],
+    ['⭐', ['aksiya', 'акци', 'promo', 'sale']], ['🍛', ['taom', 'ovqat', 'блюд', 'main', 'dish', 'горяч', 'issiq']], ['🍕', ['pitsa', 'pizza', 'пицц']], ['🍔', ['burger', 'бургер']],
     ['🌯', ['lavash', 'shaurma', 'shawarma', 'шаурм', 'лаваш', 'roll', 'ролл', 'doner', 'донер']],
     ['🍟', ['zakus', 'закус', 'snack', 'снек', 'fri', 'kartoshka', 'картоф', 'fries']],
     ['🥤', ['ichimlik', 'napit', 'напит', 'drink', 'cola', 'кола', 'sok', 'сок', 'juice', 'limonad']],
     ['☕', ['kofe', 'coffee', 'кофе', 'choy', 'чай', 'tea']], ['🥗', ['salat', 'салат', 'salad']],
-    ['🍰', ['desert', 'десерт', 'shirin', 'tort', 'торт', 'dessert', 'muzqaymoq', 'морожен']],
+    ['🍰', ['desert', 'десерт', 'shirin', 'tort', 'торт', 'dessert']], ['🍦', ['muzqaymoq', 'морожен', 'ice']], ['🥐', ['non', 'хлеб', 'bread', 'pishiriq', 'выпечк', 'bakery', 'somsa', 'самс']], ['🍎', ['meva', 'фрукт', 'fruit', 'fresh']],
     ['🍲', ['sho', 'суп', 'soup', 'osh', 'plov', 'плов', 'lag']], ['🍱', ['set', 'combo', 'комбо', 'сет']],
     ['🍗', ['tovuq', 'chicken', 'кур', 'nugget', 'крыл', 'wings']], ['🥩', ['kabob', 'kebab', 'кебаб', 'steak', 'мясо']]
   ]

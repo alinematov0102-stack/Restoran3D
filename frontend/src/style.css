@@ -160,3 +160,9 @@ img{max-width:100%}
   .add span{display:none}
   .tabbar a{min-width:0}
 }
+
+.tabbar a{flex:0 0 auto;min-width:74px;padding-left:8px;padding-right:8px}
+.tabbar:not(.more-right):not(.more-left) a{flex:1 0 74px}
+.tabbar.more-right{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent)}
+.tabbar.more-left{-webkit-mask-image:linear-gradient(to left,#000 calc(100% - 34px),transparent);mask-image:linear-gradient(to left,#000 calc(100% - 34px),transparent)}
+.tabbar.more-left.more-right{-webkit-mask-image:linear-gradient(to right,transparent,#000 30px,#000 calc(100% - 34px),transparent);mask-image:linear-gradient(to right,transparent,#000 30px,#000 calc(100% - 34px),transparent)}
